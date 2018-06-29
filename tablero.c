@@ -20,7 +20,6 @@ tablero_t tablero_vacio(){
 }
 
 tablero_t inicializar_tablero(tablero_t tablero){
-	tablero = tablero_vacio();
 	tablero->length = 32;
 	tablero->piezas = pos_inicial(tablero->piezas);
 	return(tablero);
@@ -33,39 +32,39 @@ tablero_t agregar_pieza(tablero_t tablero){
 piezas_t pos_inicial(piezas_t piezas){
 	char col[8] = {'a','b','c','d','e','f','g','h'};
 
-	piezas = nueva_pieza(piezas, 1, 'a', 'T');
-	piezas = nueva_pieza(piezas, 1, 'b', 'C');
-	piezas = nueva_pieza(piezas, 1, 'c', 'A');
-	piezas = nueva_pieza(piezas, 1, 'd', 'D');
-	piezas = nueva_pieza(piezas, 1, 'e', 'R');
-	piezas = nueva_pieza(piezas, 1, 'f', 'A');
-	piezas = nueva_pieza(piezas, 1, 'g', 'C');
-	piezas = nueva_pieza(piezas, 1, 'h', 'T');
+	piezas = nueva_pieza(piezas, 8, 'a', 'T');
+	piezas = nueva_pieza(piezas, 8, 'b', 'C');
+	piezas = nueva_pieza(piezas, 8, 'c', 'A');
+	piezas = nueva_pieza(piezas, 8, 'd', 'D');
+	piezas = nueva_pieza(piezas, 8, 'e', 'R');
+	piezas = nueva_pieza(piezas, 8, 'f', 'A');
+	piezas = nueva_pieza(piezas, 8, 'g', 'C');
+	piezas = nueva_pieza(piezas, 8, 'h', 'T');
 
-	piezas = nueva_pieza(piezas, 8, 'a', 't');
-	piezas = nueva_pieza(piezas, 8, 'b', 'c');
-	piezas = nueva_pieza(piezas, 8, 'c', 'a');
-	piezas = nueva_pieza(piezas, 8, 'd', 'd');
-	piezas = nueva_pieza(piezas, 8, 'e', 'r');
-	piezas = nueva_pieza(piezas, 8, 'f', 'a');
-	piezas = nueva_pieza(piezas, 8, 'g', 'c');
-	piezas = nueva_pieza(piezas, 8, 'h', 't');
+	piezas = nueva_pieza(piezas, 1, 'a', 't');
+	piezas = nueva_pieza(piezas, 1, 'b', 'c');
+	piezas = nueva_pieza(piezas, 1, 'c', 'a');
+	piezas = nueva_pieza(piezas, 1, 'd', 'd');
+	piezas = nueva_pieza(piezas, 1, 'e', 'r');
+	piezas = nueva_pieza(piezas, 1, 'f', 'a');
+	piezas = nueva_pieza(piezas, 1, 'g', 'c');
+	piezas = nueva_pieza(piezas, 1, 'h', 't');
 
 	for (int i=0;i<8;i++){
-		piezas = nueva_pieza(piezas, 2, col[i], 'P');
+		piezas = nueva_pieza(piezas, 7, col[i], 'P');
 	}
 	for (int i=0;i<8;i++){
-		piezas = nueva_pieza(piezas, 7, col[i], 'p');
+		piezas = nueva_pieza(piezas, 2, col[i], 'p');
 	}
 	return(piezas);
 }
 
 void mostrar_tablero(tablero_t tablero){
+	int pfila = 8;
 	piezas_t piezas = NULL;
 	piezas = tablero->piezas;
 
 	char col[8] = {'a','b','c','d','e','f','g','h'};
-	char names[12] = {'P','T','A','C','R','D','p','t','a','c','r','d'};
 	char tab[8][8];
 
 	for (int i=0;i<8;i++){
@@ -76,17 +75,31 @@ void mostrar_tablero(tablero_t tablero){
 
 	while (piezas != NULL){
 		int i = 0;
-		while (piezas->column != col[i]){ i++; }
-		int j = 0;
-		while (piezas->name != names[j]){ j++; }
-		tab[i][piezas->fila] = names[j];
-		piezas = piezas->next;
+		while ((pieza_column(piezas) != col[i]) & (i<8)){ 
+			i++;
+		}
+		int j = 1;
+		while ((pieza_fila(piezas) != j) & (j<9)){ 
+			j++;
+		}
+		j--;
+		tab[j][i] = nombre_pieza(piezas);
+		piezas = sig_pieza(piezas);
 	}
 
+	printf("______________________________________\n");
+	printf("   |                                 |\n");
 	for (int i=0;i<8;i++){
+		printf(" %d | ", pfila);
+		pfila--;
 		for (int j=0;j<8;j++){ 
 			printf("[%c] ", tab[i][j]);
 		}
-		printf ("\n");
+		if (i == 7){
+			printf("|\n___|_________________________________|\n");
+		}else{
+			printf ("|\n___|                                 |\n");
+		}
 	}
+	printf("    | a | b | c | d | e | f | g | h |\n\n");
 }

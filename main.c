@@ -74,13 +74,14 @@ tablero_t volver_jugada(tablero_t tablero, jugada *jugadas){
 */
 
 int main(void) {
-	tablero_t tablero = inicializar_tablero();
+	tablero_t tablero = tablero_vacio();
+  tablero = inicializar_tablero(tablero);
 //	jugada *planilla = crear_planilla(planilla);
 	mostrar_tablero(tablero);
 
 /*
     char option = '\0';
-    /* print a simple menu and do the requested operations 
+     print a simple menu and do the requested operations 
     do {
         option = print_menu();
         switch (option) {

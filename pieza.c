@@ -23,6 +23,21 @@ piezas_t nueva_pieza(piezas_t piezas, int f, char c, char n){
 	return(pieza);
 }
 
+char pieza_column(piezas_t pieza){
+	return(pieza->column);
+}
+
+int pieza_fila(piezas_t pieza){
+	return(pieza->fila);
+}
+
+piezas_t sig_pieza(piezas_t pieza){
+	return(pieza->next);
+}
+
+char nombre_pieza(piezas_t pieza){
+	return(pieza->name);
+}
 /*
 bool es_jug_pos(piezas_t tablero, jugada mov){
 }
