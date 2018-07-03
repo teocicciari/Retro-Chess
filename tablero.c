@@ -49,64 +49,7 @@ piezas_t pos_inicial(piezas_t piezas){
 	piezas = nueva_pieza(piezas, 1, 'f', 'A');
 	piezas = nueva_pieza(piezas, 1, 'g', 'C');
 	piezas = nueva_pieza(piezas, 1, 'h', 'T');
-
-<<<<<<< HEAD
-=======
-	piezas = nueva_pieza(piezas, 1, 'a', 't');
-	piezas = nueva_pieza(piezas, 1, 'b', 'c');
-#include <assert.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "pieza.h"
-#include "tablero.h"
-
-struct _tablero_t{
-	piezas_t piezas;
-	unsigned int length;
-};
-
-tablero_t tablero_vacio(){
-	tablero_t tablero;
-	tablero = calloc(1, sizeof(struct _tablero_t));
-	tablero->piezas = piezas_empty();
-	tablero->length = 0;
-	return(tablero);
-}
-
-tablero_t inicializar_tablero(tablero_t tablero){
-	tablero->length = 32;
-	tablero->piezas = pos_inicial(tablero->piezas);
-	return(tablero);
-}
-
-tablero_t hacer_mov(tablero_t tablero, char piezaname, char colOrig, int filaOrig, char colDest, int filaDest){
-	tablero->piezas = mover_pieza(tablero->piezas, piezaname, colOrig, filaOrig, colDest, filaDest);
-	return(tablero);
-}
-
-tablero_t destroy_tablero(tablero_t tablero){
-	assert(tablero != NULL);
-	tablero->piezas = destroy_piezas(tablero->piezas);
-	free(tablero);
-	tablero = NULL;
-	return(tablero);
-}
-
-piezas_t pos_inicial(piezas_t piezas){
-	char col[8] = {'a','b','c','d','e','f','g','h'};
-
-	piezas = nueva_pieza(piezas, 1, 'a', 'T');
-	piezas = nueva_pieza(piezas, 1, 'b', 'C');
-	piezas = nueva_pieza(piezas, 1, 'c', 'A');
-	piezas = nueva_pieza(piezas, 1, 'd', 'D');
-	piezas = nueva_pieza(piezas, 1, 'e', 'R');
-	piezas = nueva_pieza(piezas, 1, 'f', 'A');
-	piezas = nueva_pieza(piezas, 1, 'g', 'C');
-	piezas = nueva_pieza(piezas, 1, 'h', 'T');
-
->>>>>>> 0f59d389df62f8bb1e286adc33014c649448e69b
+	
 	piezas = nueva_pieza(piezas, 8, 'a', 't');
 	piezas = nueva_pieza(piezas, 8, 'b', 'c');
 	piezas = nueva_pieza(piezas, 8, 'c', 'a');
