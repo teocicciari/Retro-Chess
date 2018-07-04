@@ -9,7 +9,14 @@ struct _pieza_t {
 	int fila;
 	char column;
 	char name;
+	casillas_t mov_pos;
 	piezas_t next;
+};
+
+struct _casillas_t {
+	int fil;
+	char col;
+	casillas_t nextC;
 };
 
 piezas_t piezas_empty(){

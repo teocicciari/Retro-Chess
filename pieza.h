@@ -3,6 +3,10 @@
 
 typedef struct _pieza_t *piezas_t;
 
+typedef struct _casillas_t *casillas_t;
+
+						//FUNCIONES DE PIEZA
+
 piezas_t piezas_empty();
 
 piezas_t nueva_pieza(piezas_t piezas, int f, char c, char n);

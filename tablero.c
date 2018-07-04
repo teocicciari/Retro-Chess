@@ -49,7 +49,7 @@ piezas_t pos_inicial(piezas_t piezas){
 	piezas = nueva_pieza(piezas, 1, 'f', 'A');
 	piezas = nueva_pieza(piezas, 1, 'g', 'C');
 	piezas = nueva_pieza(piezas, 1, 'h', 'T');
-	
+
 	piezas = nueva_pieza(piezas, 8, 'a', 't');
 	piezas = nueva_pieza(piezas, 8, 'b', 'c');
 	piezas = nueva_pieza(piezas, 8, 'c', 'a');
