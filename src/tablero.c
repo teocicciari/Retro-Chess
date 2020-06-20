@@ -112,4 +112,5 @@ void mostrar_tablero(tablero_t tablero){
 		}
 	}
 	printf("\t    | a | b | c | d | e | f | g | h |\n\n");
+	printf("     q: exit to menu // b: one move back // r: restart game\n\n");
 }

@@ -8,24 +8,21 @@
 #include "src/tablero.h"
 #include "src/print.h"
 
-#define MOVE      'm'
-#define RESTART   'r'
-#define QUIT      'q'
 #define START     's'
+#define RESTART   'r'
 #define OPTIONS   'o'
 #define BACK      'b'
-#define YES       'y'
-#define NO        'n'
+#define QUIT      'q'
 
-char get_option(void) {
-    char option = '\0';
+char get_input(void) {
+    char input = '\0';
     char line[10];
 
     if (fgets(line, sizeof line, stdin) != NULL) {
-        option = line[0];
+        input = line[0];
     }
 
-    return(option);
+    return(input);
 }
 
 tablero_t move(tablero_t tablero/*, planilla_t planilla*/){
@@ -45,15 +42,15 @@ tablero_t move(tablero_t tablero/*, planilla_t planilla*/){
 }
 
 int main(void) {
-    char option = 'n';
+    char input = 'n';
 
     tablero_t tablero = tablero_vacio();
     tablero = inicializar_tablero(tablero);
 
     print_init();
-    option = get_option();
+    input = get_input();
     
-    switch (option)
+    switch (input)
     {
     case START:
         start_message();
@@ -64,23 +61,16 @@ int main(void) {
     case QUIT:
         quit_message();
         return(EXIT_SUCCESS);
-        break;
     default:
         return(EXIT_SUCCESS);
     }
-
     
     mostrar_tablero(tablero);
-    print_menu();
     
     do {
         first_move_message();
-        option = get_option();
-        switch (option) {
-	        case MOVE:
-	            tablero = move(tablero);
-                mostrar_tablero(tablero);
-	            break;
+        input = get_input();
+        switch (input) {
 	        case RESTART:
                 tablero = destroy_tablero(tablero);
                 tablero = tablero_vacio();
@@ -91,9 +81,11 @@ int main(void) {
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
-	            printf("\nPlease choose a valid option!\n\n");
+	            tablero = move(tablero);
+                mostrar_tablero(tablero);
+	            break;
         }
-    } while (option != QUIT);
+    } while (input != QUIT);
 
     return(EXIT_SUCCESS);
 }

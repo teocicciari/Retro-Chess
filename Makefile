@@ -1,18 +1,13 @@
 # build executable file 'chessprogram':
 # 'make'
 
-# removes all .o and executable files:
-# 'make clean'
-
-# COMPILER OPTS
+MAIN = chessprogram
 CC = gcc
 CFLAGS = -Isrc -Wall -Werror -Wextra -O3 -std=c99
-RM = rm -rf
 
-# SOURCES AND OBJECTS
 SRC = main.c src/*.c
-MAIN = chessprogram
 COMPILED = *.o src/*.o
+RM = rm -r
 
 all: $(OBJ)
 	$(CC) $(CFLAGS) -o $(MAIN) $(SRC) -lm

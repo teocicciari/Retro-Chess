@@ -21,7 +21,7 @@ void print_init() {
 }
 
 void print_menu() {
-  printf("     q: exit to menu // b: one move back // r: restart game\n\n");
+  printf(" ");
 }
 
 void print_options() {
