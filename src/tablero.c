@@ -97,8 +97,8 @@ void mostrar_tablero(tablero_t tablero){
 		piezas = sig_pieza(piezas);
 	}
 
-	printf("\t______________________________________\n");
-	printf("\t   |                                 |\n");
+	printf("\t   ___________________________________\n");
+	printf("\t---|                                 |\n");
 	for (int i=8;i>0;i--){
 		printf("\t %d | ", pfila);
 		pfila--;
@@ -106,9 +106,9 @@ void mostrar_tablero(tablero_t tablero){
 			printf("[%c] ", tab[i-1][j]);
 		}
 		if (i == 1){
-			printf("|\n\t___|_________________________________|\n");
+			printf("|\n\t---|_________________________________|\n");
 		}else{
-			printf ("|\n\t___|                                 |\n");
+			printf ("|\n\t---|                                 |\n");
 		}
 	}
 	printf("\t    | a | b | c | d | e | f | g | h |\n\n");

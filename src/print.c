@@ -5,27 +5,27 @@
 
 void print_init() {
   
-    printf(   "\n\t****************************\n"
-                "\t********CHESSPROGRAM********\n"
-                "\t****************************\n");
+    printf(   "\n\t     ****************************\n"
+                "\t     ********CHESSPROGRAM********\n"
+                "\t     ****************************\n");
 
     printf("\nAn advance chess IA locked in this old ASCII interface\n\n");
+    sleep(2);
                 
-    printf("\t*   s: Start a new game!    *\n"
-           "\t*        o: Options         *\n"
-           "\t*          q: Quit          *\n\n"
+    printf("\t     *   s: Start a new game!    *\n"
+           "\t     *        o: Options         *\n"
+           "\t     *          q: Quit          *\n\n"
 			);
 
     printf("Which one? ");
 }
 
 void print_menu() {
-  printf("q: exit to menu // b: one move back // r: restart game\n\n");
+  printf("     q: exit to menu // b: one move back // r: restart game\n\n");
 }
 
 void print_options() {
-  sleep(2);
-  printf("\nNo options. let's play\n\n");
+  printf("\nNo options. let's play!\n\n");
   sleep(2);
 }
 
