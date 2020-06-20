@@ -104,10 +104,8 @@ piezas_t eliminar_pieza(piezas_t piezas, piezas_t pieza){
 	piezas_t pieza = NULL;
 }
 
-bool es_jug_pos(piezas_t tablero, jugada mov){
-}
-
-bool es_jug_valida(piezas_t tablero, jugada mov){
+bool validar_jugada(piezas_t tablero, jugada mov){
+	
 }
 
 piezas_t hacer_mov(piezas_t tablero, jugada mov){
