@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "src/pieza.h"
-#include "src/tablero.h"
+#include "src/piece.h"
+#include "src/board.h"
 #include "src/print.h"
 
 #define START     's'
@@ -25,27 +25,27 @@ char get_input(void) {
     return(input);
 }
 
-tablero_t move(tablero_t tablero/*, planilla_t planilla*/){
+board_t move(board_t board){
     char line[5];
-    int co, cd;
+    int src_column, dest_column;
 
     if (fgets(line, sizeof line, stdin) == NULL) {
         printf("move fail");
         return(NULL);
     }
     
-    co = line[2] - '0';
-    cd = line[4] - '0';
+    src_column = line[2] - '0';
+    dest_column = line[4] - '0';
 
-    tablero = hacer_mov(tablero, line[0], line[1], co, line[3], cd);
-    return(tablero);
+    board = make_movement(board, line[0], line[1], src_column, line[3], dest_column);
+    return(board);
 }
 
 int main(void) {
     char input = 'n';
 
-    tablero_t tablero = tablero_vacio();
-    tablero = inicializar_tablero(tablero);
+    board_t board = empty_board();
+    board = board_init(board);
 
     print_init();
     input = get_input();
@@ -65,24 +65,24 @@ int main(void) {
         return(EXIT_SUCCESS);
     }
     
-    mostrar_tablero(tablero);
+    print_board(board);
     
     do {
         first_move_message();
         input = get_input();
         switch (input) {
 	        case RESTART:
-                tablero = destroy_tablero(tablero);
-                tablero = tablero_vacio();
-                tablero = inicializar_tablero(tablero);
-                mostrar_tablero(tablero);
+                board = destroy_board(board);
+                board = empty_board();
+                board = board_init(board);
+                print_board(board);
 	            break;
 	        case QUIT:
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
-	            tablero = move(tablero);
-                mostrar_tablero(tablero);
+	            board = move(board);
+                print_board(board);
 	            break;
         }
     } while (input != QUIT);
