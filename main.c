@@ -25,24 +25,30 @@ char get_input(void) {
     return(input);
 }
 
-board_t move(board_t board){
-    char line[5];
-    int src_column, dest_column;
+char * get_move() {
+    char * line;
+    line = calloc(10, sizeof(char));
 
     if (fgets(line, sizeof line, stdin) == NULL) {
         printf("move fail");
         return(NULL);
     }
-    
-    src_column = line[2] - '0';
-    dest_column = line[4] - '0';
 
-    board = make_movement(board, line[0], line[1], src_column, line[3], dest_column);
+    return line;
+}
+
+board_t move_(board_t board, char * m){
+    int src_column = m[2] - '0';
+    int dest_column = m[4] - '0';
+
+    board = make_movement(board, m[0], m[1], src_column, m[3], dest_column);
+    free(m);
     return(board);
 }
 
 int main(void) {
     char input = 'n';
+    char * move;
 
     board_t board = empty_board();
     board = board_init(board);
@@ -66,11 +72,11 @@ int main(void) {
     }
     
     print_board(board);
-    
+    first_move_message();
+
     do {
-        first_move_message();
-        input = get_input();
-        switch (input) {
+        move = get_move();
+        switch (move[0]) {
 	        case RESTART:
                 board = destroy_board(board);
                 board = empty_board();
@@ -81,11 +87,11 @@ int main(void) {
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
-	            board = move(board);
+	            board = move_(board, move);
                 print_board(board);
 	            break;
         }
-    } while (input != QUIT);
+    } while (1); // !gameFinished
 
     return(EXIT_SUCCESS);
 }
