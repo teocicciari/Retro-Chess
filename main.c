@@ -37,12 +37,24 @@ char * get_move() {
     return line;
 }
 
-board_t move_(board_t board, char * m){
-    int src_column = m[2] - '0';
-    int dest_column = m[4] - '0';
+board_t move_(board_t board, char * move){
+    int src_row, dest_row;
+    char rows[8] = {'a','b','c','d','e','f','g','h'};
+    
+    for (int i = 0; i < 8; i++) {
+        if(move[1] == rows[i]){
+            src_row = i;
+        } if(move[3] == rows[i]){
+            dest_row = i;
+        }
+    }
 
-    board = make_movement(board, m[0], m[1], src_column, m[3], dest_column);
-    free(m);
+    char name = move[0];
+    int src_column = move[2] - '0';
+    int dest_column = move[4] - '0';
+
+    board = make_movement(board, name, src_row, src_column, dest_row, dest_column);
+    free(move);
     return(board);
 }
 
@@ -65,9 +77,8 @@ int main(void) {
         print_options();
         break;
     case QUIT:
-        quit_message();
-        return(EXIT_SUCCESS);
     default:
+        quit_message();
         return(EXIT_SUCCESS);
     }
     
@@ -76,6 +87,7 @@ int main(void) {
 
     do {
         move = get_move();
+
         switch (move[0]) {
 	        case RESTART:
                 board = destroy_board(board);
@@ -84,6 +96,7 @@ int main(void) {
                 print_board(board);
 	            break;
 	        case QUIT:
+                board = destroy_board(board);
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
@@ -91,6 +104,8 @@ int main(void) {
                 print_board(board);
 	            break;
         }
+
+        move_message();
     } while (1); // !gameFinished
 
     return(EXIT_SUCCESS);

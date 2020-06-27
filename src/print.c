@@ -58,6 +58,10 @@ void first_move_message(){
   printf("\nIt's your turn bitch: ");
 }
 
+void move_message(){
+  printf("\nI'm waiting: ");
+}
+
 void standard_message(){
   // TODO: choose a standard message
   printf(" ");

@@ -40,31 +40,29 @@ board_t make_movement(board_t board, char piece, char src_column, int src_row, c
 }
 
 pieces_t initial_position(pieces_t pieces){
-	char col[8] = {'a','b','c','d','e','f','g','h'};
+	pieces = new_piece(pieces, 1, 0, 'R');
+	pieces = new_piece(pieces, 1, 1, 'N');
+	pieces = new_piece(pieces, 1, 2, 'B');
+	pieces = new_piece(pieces, 1, 3, 'Q');
+	pieces = new_piece(pieces, 1, 4, 'K');
+	pieces = new_piece(pieces, 1, 5, 'B');
+	pieces = new_piece(pieces, 1, 6, 'N');
+	pieces = new_piece(pieces, 1, 7, 'R');
 
-	pieces = new_piece(pieces, 1, 'a', 'T');
-	pieces = new_piece(pieces, 1, 'b', 'C');
-	pieces = new_piece(pieces, 1, 'c', 'A');
-	pieces = new_piece(pieces, 1, 'd', 'D');
-	pieces = new_piece(pieces, 1, 'e', 'R');
-	pieces = new_piece(pieces, 1, 'f', 'A');
-	pieces = new_piece(pieces, 1, 'g', 'C');
-	pieces = new_piece(pieces, 1, 'h', 'T');
-
-	pieces = new_piece(pieces, 8, 'a', 't');
-	pieces = new_piece(pieces, 8, 'b', 'c');
-	pieces = new_piece(pieces, 8, 'c', 'a');
-	pieces = new_piece(pieces, 8, 'd', 'd');
-	pieces = new_piece(pieces, 8, 'e', 'r');
-	pieces = new_piece(pieces, 8, 'f', 'a');
-	pieces = new_piece(pieces, 8, 'g', 'c');
-	pieces = new_piece(pieces, 8, 'h', 't');
+	pieces = new_piece(pieces, 8, 0, 'r');
+	pieces = new_piece(pieces, 8, 1, 'n');
+	pieces = new_piece(pieces, 8, 2, 'b');
+	pieces = new_piece(pieces, 8, 3, 'q');
+	pieces = new_piece(pieces, 8, 4, 'k');
+	pieces = new_piece(pieces, 8, 5, 'b');
+	pieces = new_piece(pieces, 8, 6, 'n');
+	pieces = new_piece(pieces, 8, 7, 'r');
 
 	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 7, col[i], 'p');
+		pieces = new_piece(pieces, 7, i, 'p');
 	}
 	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 2, col[i], 'P');
+		pieces = new_piece(pieces, 2, i, 'P');
 	}
 	return(pieces);
 }
@@ -74,7 +72,6 @@ void print_board(board_t board){
 	pieces_t pieces = NULL;
 	pieces = board->pieces;
 
-	char col[8] = {'a','b','c','d','e','f','g','h'};
 	char tab[8][8];
 
 	for (int i=0;i<8;i++){
@@ -85,7 +82,7 @@ void print_board(board_t board){
 
 	while (pieces != NULL){
 		int i = 0;
-		while ((piece_column(pieces) != col[i]) & (i<8)){ 
+		while ((piece_column(pieces) != i) & (i<8)){ 
 			i++;
 		}
 		int j = 1;
