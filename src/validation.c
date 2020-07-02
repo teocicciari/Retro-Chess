@@ -1,5 +1,4 @@
-#include "../includes.h"
-#include "piece.h"
+#include "validation.h"
 
 bool is_valid_square(int r, int c) {
 	if (r < 0 || r > 7 || c < 0 || c > 7) {

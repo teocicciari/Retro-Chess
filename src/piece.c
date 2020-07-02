@@ -1,4 +1,3 @@
-#include "../includes.h"
 #include "piece.h"
 
 struct _piece_t {
@@ -10,8 +9,8 @@ struct _piece_t {
 };
 
 struct _square_t {
-	int 				row;
-	int 				column;
+	int 				row;		// 1 - 8
+	int 				column;	// 0='a'- 7='h'
 	squares_t 	nextSq;
 };
 

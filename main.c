@@ -1,9 +1,12 @@
 #include "includes.h"
+
 #include "src/piece.h"
 #include "src/board.h"
 #include "src/print.h"
+#include "tests/test.h"
 
 #define START     's'
+#define TEST      't'
 #define RESTART   'r'
 #define OPTIONS   'o'
 #define BACK      'b'
@@ -59,8 +62,7 @@ int main(void) {
     char * move;
 
     board_t board = empty_board();
-    board = board_init(board);
-
+    
     print_init();
     input = get_input();
     
@@ -68,10 +70,14 @@ int main(void) {
     {
     case START:
         start_message();
+        board = board_init(board);
         break;
     case OPTIONS:
         print_options();
         break;
+    case TEST:
+        tests(board);
+        return(EXIT_SUCCESS);
     case QUIT:
     default:
         quit_message();

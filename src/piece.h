@@ -1,6 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include "../includes.h"
+
 // Define structures
 typedef struct _piece_t *   pieces_t;
 typedef struct _square_t *  squares_t;

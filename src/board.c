@@ -1,5 +1,3 @@
-#include "../includes.h"
-#include "piece.h"
 #include "board.h"
 
 struct _board_t {
@@ -32,6 +30,11 @@ board_t destroy_board(board_t board){
 board_t make_movement(board_t board, char piece, char src_column, int src_row, char dest_column, int dest_row){
 	board->pieces = move_piece(board->pieces, piece, src_column, src_row, dest_column, dest_row);
 	return(board);
+}
+
+board_t add_piece_to_board(board_t board, char name, char color, int r, int c) {
+	board->pieces = add_piece(board->pieces, name, color, r, c);
+	return board;
 }
 
 pieces_t initial_position(pieces_t pieces){
