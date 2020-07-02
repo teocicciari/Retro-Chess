@@ -1,13 +1,8 @@
-#include <assert.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "../includes.h"
 #include "piece.h"
 #include "board.h"
 
-struct _board_t{
+struct _board_t {
 	pieces_t 			pieces;
 	unsigned int 	length;
 };
@@ -40,29 +35,29 @@ board_t make_movement(board_t board, char piece, char src_column, int src_row, c
 }
 
 pieces_t initial_position(pieces_t pieces){
-	pieces = new_piece(pieces, 1, 0, 'R');
-	pieces = new_piece(pieces, 1, 1, 'N');
-	pieces = new_piece(pieces, 1, 2, 'B');
-	pieces = new_piece(pieces, 1, 3, 'Q');
-	pieces = new_piece(pieces, 1, 4, 'K');
-	pieces = new_piece(pieces, 1, 5, 'B');
-	pieces = new_piece(pieces, 1, 6, 'N');
-	pieces = new_piece(pieces, 1, 7, 'R');
+	pieces = add_piece(pieces, 'R', 'w', 1, 0);
+	pieces = add_piece(pieces, 'N', 'w', 1, 1);
+	pieces = add_piece(pieces, 'B', 'w', 1, 2);
+	pieces = add_piece(pieces, 'Q', 'w', 1, 3);
+	pieces = add_piece(pieces, 'K', 'w', 1, 4);
+	pieces = add_piece(pieces, 'B', 'w', 1, 5);
+	pieces = add_piece(pieces, 'N', 'w', 1, 6);
+	pieces = add_piece(pieces, 'R', 'w', 1, 7);
 
-	pieces = new_piece(pieces, 8, 0, 'r');
-	pieces = new_piece(pieces, 8, 1, 'n');
-	pieces = new_piece(pieces, 8, 2, 'b');
-	pieces = new_piece(pieces, 8, 3, 'q');
-	pieces = new_piece(pieces, 8, 4, 'k');
-	pieces = new_piece(pieces, 8, 5, 'b');
-	pieces = new_piece(pieces, 8, 6, 'n');
-	pieces = new_piece(pieces, 8, 7, 'r');
+	pieces = add_piece(pieces, 'r', 'b', 8, 0);
+	pieces = add_piece(pieces, 'n', 'b', 8, 1);
+	pieces = add_piece(pieces, 'b', 'b', 8, 2);
+	pieces = add_piece(pieces, 'q', 'b', 8, 3);
+	pieces = add_piece(pieces, 'k', 'b', 8, 4);
+	pieces = add_piece(pieces, 'b', 'b', 8, 5);
+	pieces = add_piece(pieces, 'n', 'b', 8, 6);
+	pieces = add_piece(pieces, 'r', 'b', 8, 7);
 
 	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 7, i, 'p');
+		pieces = add_piece(pieces, 'p', 'b', 7, i);
 	}
 	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 2, i, 'P');
+		pieces = add_piece(pieces, 'P', 'w', 2, i);
 	}
 	return(pieces);
 }

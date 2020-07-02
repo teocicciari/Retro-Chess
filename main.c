@@ -1,9 +1,4 @@
-#include <assert.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "includes.h"
 #include "src/piece.h"
 #include "src/board.h"
 #include "src/print.h"
@@ -37,6 +32,7 @@ char * get_move() {
     return line;
 }
 
+
 board_t move_(board_t board, char * move){
     int src_row, dest_row;
     char rows[8] = {'a','b','c','d','e','f','g','h'};
@@ -56,7 +52,7 @@ board_t move_(board_t board, char * move){
     board = make_movement(board, name, src_row, src_column, dest_row, dest_column);
     free(move);
     return(board);
-}
+} 
 
 int main(void) {
     char input = 'n';

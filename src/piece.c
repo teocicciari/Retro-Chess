@@ -1,20 +1,15 @@
-#include <assert.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "../includes.h"
 #include "piece.h"
 
 struct _piece_t {
-	int 				row;
-	int 				column;
 	char 				name;
-	squares_t 	mov_pos;
+	char 				color;
+	squares_t		position;
+	squares_t 	posible_moves;
 	pieces_t 		next;
 };
 
-struct _squares_t {
+struct _square_t {
 	int 				row;
 	int 				column;
 	squares_t 	nextSq;
@@ -25,13 +20,52 @@ pieces_t empty_pieces(){
 	return(pieces);
 }
 
-pieces_t new_piece(pieces_t pieces, int row, int column, char name){
+pieces_t add_piece(pieces_t pieces, char name, char color, int r, int c){
 	pieces_t piece = calloc(1, sizeof(struct _piece_t));
-	piece->row = row;
-	piece->column = column;
+
 	piece->name = name;
+	piece->color = color;
+	piece->position = calloc(1, sizeof(struct _square_t));
+	piece->position->row = r;
+	piece->position->column = c;
+	piece->position->nextSq = NULL;
+	piece->posible_moves = NULL;
 	piece->next = pieces;
+
 	return(piece);
+}
+
+pieces_t delete_piece(pieces_t pieces, pieces_t piece){
+	pieces_t p = pieces;
+	pieces_t result;
+
+	if (pieces == piece) {
+		result = next_piece(pieces);
+		free(pieces);
+		return result;
+	}
+
+	while (next_piece(p) != piece && next_piece(p) != NULL){
+		p = next_piece(p);
+	}
+
+	if (next_piece(p) == piece) {
+		result = next_piece(p->next);
+		free(p->next);
+		p->next = NULL;
+
+		p = result;
+
+		while (next_piece(p) != NULL){
+			p = next_piece(p);
+		}
+		p->next = pieces;
+	} else {
+		printf("DEBUG: Piece not found");
+		return pieces;
+	}
+
+	return result;
 }
 
 pieces_t destroy_pieces(pieces_t piece){
@@ -45,14 +79,57 @@ pieces_t destroy_pieces(pieces_t piece){
 	return(p);
 }
 
+char piece_name(pieces_t piece){
+	return(piece->name);
+}
+
+char piece_color(pieces_t piece){
+	return(piece->color);
+}
+
+int piece_column(pieces_t piece){
+	return(piece->position->column);
+}
+
+int piece_row(pieces_t piece){
+	return(piece->position->row);
+}
+
+pieces_t next_piece(pieces_t piece){
+	return(piece->next);
+}
+
+squares_t add_move(int r, int c, squares_t moves){
+	squares_t move = NULL;
+	move = calloc(1, sizeof(struct _square_t));
+
+	move->row = r;
+	move->column = c;
+	move->nextSq = NULL;
+
+	if (moves != NULL) {
+		move->nextSq = moves;
+	}
+
+	return move;
+}
+
+void set_posible_moves(pieces_t piece, squares_t moves){
+	piece->posible_moves = moves;
+}
+
+
+/* Moving a piece, old code.. eventually deleted */
+
+
 pieces_t search_piece(pieces_t pieces, char name, int col, int row) {
 	pieces_t piece = NULL;
-	if ((pieces->row != row) | (pieces->column != col)) {
-		while((pieces->next != NULL) & !((pieces->row == row) & (pieces->column == col))) {
-			pieces = pieces->next;
+	if ((piece_row(pieces) != row) | (piece_column(pieces) != col)) {
+		while((next_piece(pieces) != NULL) & !((piece_row(pieces) == row) & (piece_column(pieces) == col))) {
+			pieces = next_piece(pieces);
 		}
 	}
-	if ((pieces->row == row) & (pieces->column == col) & (pieces->name == name)) {
+	if ((piece_row(pieces) == row) & (piece_column(pieces) == col) & (piece_name(pieces) == name)) {
 		piece = pieces;
 	}
 	return(piece);
@@ -62,124 +139,25 @@ pieces_t move_piece(pieces_t pieces, char name, int src_column, int src_row, int
 	pieces_t piece = search_piece(pieces, name, src_column, src_row);
 	pieces_t p = pieces;
 
-	calculate_moves(p, 'b');
-
 	if (piece == NULL){
 		printf("\nPiece not found\n");
 	}
 	else if (pieces != piece){
-		while (pieces->next != piece){
-			pieces = pieces->next;
+		while (next_piece(pieces) != piece){
+			pieces = next_piece(pieces);
 		}
 		pieces->next = piece->next;
-		piece->column = dest_column;
-		piece->row = dest_row;
+		piece->position->column = dest_column;
+		piece->position->row = dest_row;
 		piece->next = p;
 		pieces = piece;
 	}
 	else if (pieces == piece){
-		piece->column = dest_column;
-		piece->row = dest_row;
+		piece->position->column = dest_column;
+		piece->position->row = dest_row;
 	}
 	else {
-		printf("\nSomething wrong\n");
+		printf("\nDEBUG: something wrong\n");
 	}
 	return(pieces);
 }
-
-char piece_name(pieces_t piece){
-	return(piece->name);
-}
-
-int piece_column(pieces_t piece){
-	return(piece->column);
-}
-
-int piece_row(pieces_t piece){
-	return(piece->row);
-}
-
-pieces_t next_piece(pieces_t piece){
-	return(piece->next);
-}
-
-void calculate_moves(pieces_t pieces, char turn) {
-	int board[8][8];
-	pieces_t p = pieces;
-	
-	if (turn == 'a') {
-		turn = 'b';
-	} else {
-		turn = 'c';
-	} 
-
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			board[i][j] = 0;
-		}
-	}
-
-	while (p != NULL) {
-		switch (p->name) 
-		{
-		case 'r':
-			board[p->column][p->row - 1] = -4;
-			break;
-		case 'n':
-			board[p->column][p->row - 1] = -2;
-			break;
-		case 'b':
-			board[p->column][p->row - 1] = -3;
-			break;
-		case 'q':
-			board[p->column][p->row - 1] = -9;
-			break;
-		case 'k':
-			board[p->column][p->row - 1] = -10;
-			break;
-		case 'p':
-			board[p->column][p->row - 1] = -1;
-			break;
-		case 'R':
-			board[p->column][p->row - 1] = 4;
-			break;
-		case 'N':
-			board[p->column][p->row - 1] = 2;
-			break;
-		case 'B':
-			board[p->column][p->row - 1] = 3;
-			break;
-		case 'Q':
-			board[p->column][p->row - 1] = 9;
-			break;
-		case 'K':
-			board[p->column][p->row - 1] = 10;
-			break;
-		case 'P':
-			board[p->column][p->row - 1] = 1;
-			break;
-		default:
-			break;
-		}
-		p = p->next;
-	}
-
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			printf("%d\t", board[j][i]);
-		}
-		printf("\n");
-	}
-	
-}
-
-/*
-
-pieces_t delete_piece(pieces_t pieces, pieces_t piece){
-	pieces_t piece = NULL;
-}
-
-bool validate_move(pieces_t board, jugada mov){
-}
-
-*/
