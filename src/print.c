@@ -14,10 +14,22 @@ void print_init() {
                 
     printf("\t     *   s: Start a new game!    *\n"
            "\t     *        o: Options         *\n"
+           "\t     *          t: Tests         *\n"
            "\t     *          q: Quit          *\n\n"
 			);
 
     printf("Which one? ");
+}
+
+void print_tests() {
+
+    printf("\n-----------------TESTSSSSSS---------------\n\n");
+                
+    printf("\tn: Agregar una pieza\n"
+           "\tm: Mover una pieza\n"
+           "\tp: Print posible moves and board\n"
+           "\tq: Quit\n\n"
+			);
 }
 
 void print_menu() {

@@ -1,5 +1,10 @@
 #include "test.h"
 
+#define NEW_PIECE       'n'
+#define MOVE            'm'
+#define PRINT_PIECES    'p'
+#define QUIT            'q'
+
 char * get_piece() {
     char * line;
     line = calloc(10, sizeof(char));
@@ -10,6 +15,17 @@ char * get_piece() {
     }
 
     return line;
+}
+
+char get_input2(void) {
+    char input = '\0';
+    char line[10];
+
+    if (fgets(line, sizeof line, stdin) != NULL) {
+        input = line[0];
+    }
+
+    return(input);
 }
 
 board_t put_piece(board_t board){
@@ -36,10 +52,32 @@ board_t put_piece(board_t board){
 } 
 
 void tests(board_t board) {
-  board = put_piece(board);
+  print_tests();
+  char input;
+  bool quit = false;
   pieces_t pieces = board_pieces(board);
-
-  print_board(board);
-  calculate_moves(pieces, 'w');
-  print_posible_moves(pieces);
+  
+  do
+  {
+    printf("> ");
+    input = get_input2();
+    switch (input)
+    {
+    case MOVE:
+      break;
+    case NEW_PIECE:
+      board = put_piece(board);
+      pieces = board_pieces(board);
+      calculate_moves(pieces, 'w');
+      break;
+    case PRINT_PIECES:
+      pieces = board_pieces(board);
+      print_board(board);
+      print_posible_moves(pieces);
+      break;
+    case QUIT:
+      quit = true;
+      break;
+    }
+  } while (!quit);
 }

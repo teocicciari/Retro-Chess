@@ -5,6 +5,7 @@
 void print_init();
 void print_menu();
 void print_options();
+void print_tests();
 
 // Messeges
 void start_message();
