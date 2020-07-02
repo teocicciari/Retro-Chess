@@ -22,5 +22,6 @@ int   piece_row(pieces_t piece);
 
 squares_t add_move(int r, int c, squares_t moves);
 void set_posible_moves(pieces_t piece, squares_t moves);
+void print_posible_moves(pieces_t pieces);
 
 #endif

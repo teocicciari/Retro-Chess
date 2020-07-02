@@ -36,8 +36,10 @@ board_t put_piece(board_t board){
 } 
 
 void tests(board_t board) {
-
   board = put_piece(board);
+  pieces_t pieces = board_pieces(board);
 
   print_board(board);
+  calculate_moves(pieces, 'w');
+  print_posible_moves(pieces);
 }

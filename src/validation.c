@@ -1,7 +1,7 @@
 #include "validation.h"
 
 bool is_valid_square(int r, int c) {
-	if (r < 0 || r > 7 || c < 0 || c > 7) {
+	if (r < 1 || r > 8 || c < 0 || c > 7) {
 		return false;
 	} else {
 		return true;
@@ -67,7 +67,7 @@ void calculate_moves(pieces_t pieces, char color) {
 	pieces_t p = pieces;
 	squares_t moves;
 
-	while (next_piece(p) != NULL) {
+	do {
 		if (piece_color(p) == color) {
 			moves = NULL;
 
@@ -105,10 +105,8 @@ void calculate_moves(pieces_t pieces, char color) {
 			} else {
 				printf("\nDEBUG: moves is NULL\n");
 			}
-		}
-
-		p = next_piece(p);
-	}
+		} 
+	} while ((p = next_piece(p)) != NULL);
 }
 
 /*

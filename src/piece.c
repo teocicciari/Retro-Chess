@@ -34,6 +34,63 @@ pieces_t add_piece(pieces_t pieces, char name, char color, int r, int c){
 	return(piece);
 }
 
+char piece_name(pieces_t piece){
+	return(piece->name);
+}
+
+char piece_color(pieces_t piece){
+	return(piece->color);
+}
+
+int piece_column(pieces_t piece){
+	return(piece->position->column);
+}
+
+int piece_row(pieces_t piece){
+	return(piece->position->row);
+}
+
+pieces_t next_piece(pieces_t piece){
+	return(piece->next);
+}
+
+squares_t add_move(int r, int c, squares_t moves){
+	squares_t move = NULL;
+	move = calloc(1, sizeof(struct _square_t));
+
+	move->row = r;
+	move->column = c;
+	move->nextSq = NULL;
+
+	if (moves != NULL) {
+		move->nextSq = moves;
+	}
+
+	return move;
+}
+
+void set_posible_moves(pieces_t piece, squares_t moves){
+	piece->posible_moves = moves;
+}
+
+
+bool is_posible_move(pieces_t pieces, char name, int r, int c){
+	squares_t moves;
+
+	do {
+		if (piece_name(pieces) == name) {
+			moves = pieces->posible_moves;
+			do {
+				if (moves->column == c && moves->row == r){
+					return true;
+				}
+			} while ((moves = moves->nextSq) != NULL);
+		}
+	} while ((pieces = next_piece(pieces)) != NULL);
+
+	return false;
+}
+
 pieces_t delete_piece(pieces_t pieces, pieces_t piece){
 	pieces_t p = pieces;
 	pieces_t result;
@@ -78,46 +135,6 @@ pieces_t destroy_pieces(pieces_t piece){
 	return(p);
 }
 
-char piece_name(pieces_t piece){
-	return(piece->name);
-}
-
-char piece_color(pieces_t piece){
-	return(piece->color);
-}
-
-int piece_column(pieces_t piece){
-	return(piece->position->column);
-}
-
-int piece_row(pieces_t piece){
-	return(piece->position->row);
-}
-
-pieces_t next_piece(pieces_t piece){
-	return(piece->next);
-}
-
-squares_t add_move(int r, int c, squares_t moves){
-	squares_t move = NULL;
-	move = calloc(1, sizeof(struct _square_t));
-
-	move->row = r;
-	move->column = c;
-	move->nextSq = NULL;
-
-	if (moves != NULL) {
-		move->nextSq = moves;
-	}
-
-	return move;
-}
-
-void set_posible_moves(pieces_t piece, squares_t moves){
-	piece->posible_moves = moves;
-}
-
-
 /* Moving a piece, old code.. eventually deleted */
 
 
@@ -159,4 +176,27 @@ pieces_t move_piece(pieces_t pieces, char name, int src_column, int src_row, int
 		printf("\nDEBUG: something wrong\n");
 	}
 	return(pieces);
+}
+
+void print_posible_moves(pieces_t pieces) {
+  char columns[8] = {'a','b','c','d','e','f','g','h'};
+	pieces_t p = pieces;
+	squares_t moves;
+	char c;
+	int r;
+
+	do {
+		moves = p->posible_moves;
+		assert(moves != NULL);
+		printf("%c: ", piece_name(p));
+		
+		do {
+			r = moves->row;
+			c = columns[moves->column];
+			printf("%c%d ", c, r);
+		} while ((moves = moves->nextSq) != NULL);
+		printf("\n");
+		
+	} while ((p = next_piece(p)) != NULL);
+	
 }

@@ -15,5 +15,6 @@ board_t add_piece_to_board(board_t board, char name, char color, int r, int c);
 void print_board(board_t board);
 
 pieces_t initial_position(pieces_t pieces);
+pieces_t board_pieces(board_t board);
 
 #endif

@@ -37,6 +37,10 @@ board_t add_piece_to_board(board_t board, char name, char color, int r, int c) {
 	return board;
 }
 
+pieces_t board_pieces(board_t board){
+	return board->pieces;
+}
+
 pieces_t initial_position(pieces_t pieces){
 	pieces = add_piece(pieces, 'R', 'w', 1, 0);
 	pieces = add_piece(pieces, 'N', 'w', 1, 1);
