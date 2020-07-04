@@ -10,7 +10,7 @@ struct _piece_t {
 
 struct _square_t {
 	int 				row;		// 1 - 8
-	int 				column;	// 0='a'- 7='h'
+	int 				column;		// 0='a'- 7='h'
 	squares_t 	nextSq;
 };
 
@@ -32,6 +32,10 @@ pieces_t add_piece(pieces_t pieces, char name, char color, int r, int c){
 	piece->next = pieces;
 
 	return(piece);
+}
+
+char piece_name_cap(pieces_t piece){
+	return(toupper(piece->name));
 }
 
 char piece_name(pieces_t piece){
@@ -67,6 +71,20 @@ squares_t add_move(int r, int c, squares_t moves){
 	}
 
 	return move;
+}
+
+squares_t concat_moves(squares_t a, squares_t b){
+	squares_t result = a;
+	if (a == NULL) {
+		return b;
+	}
+
+	while(a->nextSq != NULL) {
+		a = a->nextSq;
+	}
+	a->nextSq = b;
+
+	return result;
 }
 
 void set_posible_moves(pieces_t piece, squares_t moves){
@@ -187,14 +205,18 @@ void print_posible_moves(pieces_t pieces) {
 
 	do {
 		moves = p->posible_moves;
-		assert(moves != NULL);
 		printf("%c: ", piece_name(p));
+
+		if (moves == NULL) {
+			printf("can't move :(");
+		} else {
+			do {
+				r = moves->row;
+				c = columns[moves->column];
+				printf("%c%d ", c, r);
+			} while ((moves = moves->nextSq) != NULL);
+		}
 		
-		do {
-			r = moves->row;
-			c = columns[moves->column];
-			printf("%c%d ", c, r);
-		} while ((moves = moves->nextSq) != NULL);
 		printf("\n");
 		
 	} while ((p = next_piece(p)) != NULL);

@@ -69,6 +69,7 @@ void tests(board_t board) {
       board = put_piece(board);
       pieces = board_pieces(board);
       calculate_moves(pieces, 'w');
+      calculate_moves(pieces, 'b');
       break;
     case PRINT_PIECES:
       pieces = board_pieces(board);

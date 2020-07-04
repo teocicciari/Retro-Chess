@@ -29,6 +29,19 @@ bool is_capture(int r, int c, int color, pieces_t pieces) {
 	return false;
 }
 
+bool valid_and_empty(int r, int c, pieces_t pieces){
+	/*
+	 Returns true if the square (r,c) is inside of the board, 
+	 doesn't have a piece inside or 
+	 if it does have a piece inside it's an enemy's piece 
+	*/
+	if (is_valid_square(r, c) && (is_empty_square(r, c, pieces))) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool valid_and_empty_or_capture(int r, int c, int color, pieces_t pieces){
 	/*
 	 Returns true if the square (r,c) is inside of the board, 
@@ -42,6 +55,38 @@ bool valid_and_empty_or_capture(int r, int c, int color, pieces_t pieces){
 	} else {
 		return false;
 	}
+}
+
+squares_t pawn_moves(pieces_t pawn, pieces_t pieces){
+	squares_t result = NULL;
+
+	int r = piece_row(pawn);
+	int c = piece_column(pawn);
+	int color = piece_color(pawn);
+
+	int start = 2; int step = 1;
+	if (color == 'b'){
+		start = 7; step = -1;
+	}
+
+	if (valid_and_empty(r + step, c, pieces)) {
+		result = add_move(r + step, c, result);
+		if (r == start) {
+			if (valid_and_empty(r + (2*step), c, pieces)) {
+				result = add_move(r + (2*step), c, result);
+			}
+		}
+	}
+	
+
+	if (is_capture(r + step, c + 1, color, pieces)) {
+		result = add_move(r + step, c + 1, result);
+	}
+	if (is_capture(r + step, c - 1, color, pieces)) {
+		result = add_move(r + step, c - 1, result);
+	}
+
+	return result;
 }
 
 squares_t knight_moves(pieces_t knight, pieces_t pieces){
@@ -63,6 +108,81 @@ squares_t knight_moves(pieces_t knight, pieces_t pieces){
 	return result;
 }
 
+squares_t bishop_moves(pieces_t bishop, pieces_t pieces){
+	squares_t result = NULL;
+	int r, c;
+
+	int row = piece_row(bishop);
+	int column = piece_column(bishop);
+	int color = piece_color(bishop);
+
+	int rows[4] = 		{1, 1, -1, -1};
+	int columns[4] = 	{1, -1, 1, -1};
+
+	for (int i = 0; i < 4; i++) {
+		r = row; c = column;
+		while (valid_and_empty(r + rows[i], c + columns[i], pieces)) {
+			result = add_move(r + rows[i], c + columns[i], result);
+			r = r + rows[i]; 
+			c = c + columns[i];
+		}
+		if (is_capture(r + rows[i], c + columns[i], color, pieces)){
+			result = add_move(r + rows[i], c + columns[i], result);
+		}
+	}
+
+	return result;
+}
+
+squares_t rook_moves(pieces_t rook, pieces_t pieces){
+	squares_t result = NULL;
+	int r, c;
+
+	int row = piece_row(rook);
+	int column = piece_column(rook);
+	int color = piece_color(rook);
+
+	int rows[4] = 		{1, -1, 0, 0};
+	int columns[4] = 	{0, 0, 1, -1};
+
+	for (int i = 0; i < 4; i++) {
+		r = row; c = column;
+		while (valid_and_empty(r + rows[i], c + columns[i], pieces)) {
+			result = add_move(r + rows[i], c + columns[i], result);
+			r = r + rows[i]; 
+			c = c + columns[i];
+		}
+		if (is_capture(r + rows[i], c + columns[i], color, pieces)){
+			result = add_move(r + rows[i], c + columns[i], result);
+		}
+	}
+
+	return result;
+}
+
+squares_t queen_moves(pieces_t queen, pieces_t pieces){
+	return concat_moves(bishop_moves(queen, pieces), rook_moves(queen, pieces));
+}
+
+squares_t king_moves(pieces_t king, pieces_t pieces){
+	squares_t result = NULL;
+
+	int r = piece_row(king);
+	int c = piece_column(king);
+	int color = piece_color(king);
+
+	int rows[8] = 		{r+1, r+1, r+1, r	 , r	, r-1, r-1, r-1};
+	int columns[8] = 	{c	, c-1, c+1, c-1, c+1, c	 , c+1, c-1};
+
+	for (int i = 0; i<8; i++) {
+		if (valid_and_empty_or_capture(rows[i], columns[i], color, pieces)){ 
+			result = add_move(rows[i], columns[i], result); 
+		}
+	}
+
+	return result;
+}
+
 void calculate_moves(pieces_t pieces, char color) {
 	pieces_t p = pieces;
 	squares_t moves;
@@ -71,20 +191,17 @@ void calculate_moves(pieces_t pieces, char color) {
 		if (piece_color(p) == color) {
 			moves = NULL;
 
-			switch (piece_name(p))
+			switch (piece_name_cap(p))
 			{
-      /*
 			case 'P':
 				moves = pawn_moves(p, pieces);
 				break;
 			case 'R':
 				moves = rook_moves(p, pieces);
 				break;
-      */
 			case 'N':
 				moves = knight_moves(p, pieces);
 				break;
-      /*
 			case 'B':
 				moves = bishop_moves(p, pieces);
 				break;
@@ -94,17 +211,12 @@ void calculate_moves(pieces_t pieces, char color) {
 			case 'Q':
 				moves = queen_moves(p, pieces);
 				break;
-			*/
 			default:
-				printf("\nDEBUG: case fail\n");
+				printf("\ncase fail\n");
 				break;
 			}
 
-			if (moves != NULL) { 
-				set_posible_moves(p, moves); 
-			} else {
-				printf("\nDEBUG: moves is NULL\n");
-			}
+			set_posible_moves(p, moves);
 		} 
 	} while ((p = next_piece(p)) != NULL);
 }
@@ -116,25 +228,5 @@ bool is_in_check(int r, int c, int color, pieces_t pieces){
 	// 2 - check if (r, c) is in the posible_moves of the enemy
 	// situation: recursive loop if there is only one square between kings
 	return false;
-}
-
-squares_t king_moves(pieces_t king, pieces_t pieces){
-	squares_t result = NULL;
-
-	int r = king->position->row;
-	int c = king->position->column;
-	int color = king->color;
-
-	int rows[8] = 		{r+1, r+1, r+1, r	 , r	, r-1, r-1, r-1};
-	int columns[8] = 	{c	, c-1, c+1, c-1, c+1, c	 , c+1, c-1};
-
-	for (int i = 0; i<8; i++) {
-		if (valid_and_empty_or_enemy(rows[i], columns[i], color, pieces) &&
-				!is_in_check(r, c, color, pieces)){ 
-			result = addMove(rows[i], columns[i], result); 
-		}
-	}
-
-	return result;
 }
 */

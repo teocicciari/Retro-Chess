@@ -16,11 +16,13 @@ void     calculate_moves(pieces_t pieces, char turn);
 
 // get info for piece
 char  piece_name(pieces_t piece);
+char piece_name_cap(pieces_t piece);
 char piece_color(pieces_t piece);
 int   piece_column(pieces_t piece);
 int   piece_row(pieces_t piece);
 
 squares_t add_move(int r, int c, squares_t moves);
+squares_t concat_moves(squares_t a, squares_t b);
 void set_posible_moves(pieces_t piece, squares_t moves);
 void print_posible_moves(pieces_t pieces);
 
