@@ -1,7 +1,7 @@
 #include "board.h"
 
 struct _board_t {
-	pieces_t 			pieces;
+	pieces_t 		pieces;
 	unsigned int 	length;
 };
 

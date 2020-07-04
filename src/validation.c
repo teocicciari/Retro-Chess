@@ -30,11 +30,6 @@ bool is_capture(int r, int c, int color, pieces_t pieces) {
 }
 
 bool valid_and_empty(int r, int c, pieces_t pieces){
-	/*
-	 Returns true if the square (r,c) is inside of the board, 
-	 doesn't have a piece inside or 
-	 if it does have a piece inside it's an enemy's piece 
-	*/
 	if (is_valid_square(r, c) && (is_empty_square(r, c, pieces))) {
 		return true;
 	} else {
@@ -43,11 +38,6 @@ bool valid_and_empty(int r, int c, pieces_t pieces){
 }
 
 bool valid_and_empty_or_capture(int r, int c, int color, pieces_t pieces){
-	/*
-	 Returns true if the square (r,c) is inside of the board, 
-	 doesn't have a piece inside or 
-	 if it does have a piece inside it's an enemy's piece 
-	*/
 	if (is_valid_square(r, c) && 
 		 (is_empty_square(r, c, pieces) || 
 			is_capture(r, c, color, pieces))) {

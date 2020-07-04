@@ -1,16 +1,16 @@
 #include "piece.h"
 
 struct _piece_t {
-	char 				name;
-	char 				color;
-	squares_t		position;
+	char 		name;
+	char 		color;
+	squares_t	position;
 	squares_t 	posible_moves;
-	pieces_t 		next;
+	pieces_t 	next;
 };
 
 struct _square_t {
-	int 				row;		// 1 - 8
-	int 				column;		// 0='a'- 7='h'
+	int 		row;		// 1 - 8
+	int 		column;		// 0='a'- 7='h'
 	squares_t 	nextSq;
 };
 
