@@ -27,11 +27,6 @@ board_t destroy_board(board_t board){
 	return(board);
 }
 
-board_t make_movement(board_t board, char piece, char src_column, int src_row, char dest_column, int dest_row){
-	board->pieces = move_piece(board->pieces, piece, src_column, src_row, dest_column, dest_row);
-	return(board);
-}
-
 board_t add_piece_to_board(board_t board, char name, char color, int r, int c) {
 	board->pieces = add_piece(board->pieces, name, color, r, c);
 	return board;
@@ -39,6 +34,11 @@ board_t add_piece_to_board(board_t board, char name, char color, int r, int c) {
 
 pieces_t board_pieces(board_t board){
 	return board->pieces;
+}
+
+board_t set_board(board_t board, pieces_t pieces){
+	board->pieces = pieces;
+	return board;
 }
 
 pieces_t initial_position(pieces_t pieces){

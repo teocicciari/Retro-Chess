@@ -26,4 +26,15 @@ squares_t concat_moves(squares_t a, squares_t b);
 void set_posible_moves(pieces_t piece, squares_t moves);
 void print_posible_moves(pieces_t pieces);
 
+// Moves
+pieces_t pawn_move(pieces_t pieces, int c, int r);
+pieces_t pawn_capture(pieces_t pieces, int c_src, int c_dest, int r);
+pieces_t simple_move(pieces_t pieces, char name, int c, int r);
+pieces_t promotion(pieces_t pieces, int c, int r);
+pieces_t capture(pieces_t pieces, char name, int c, int r);
+pieces_t from_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest);
+pieces_t from_column_move(pieces_t pieces, char name, int r_src, int c, int r_dest);
+pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest);
+pieces_t capture_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r);
+
 #endif

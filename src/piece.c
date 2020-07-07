@@ -113,33 +113,28 @@ pieces_t delete_piece(pieces_t pieces, pieces_t piece){
 	pieces_t p = pieces;
 	pieces_t result;
 
-	if (pieces == piece) {
-		result = next_piece(pieces);
-		free(pieces);
+	if (p == piece) {
+		result = next_piece(p);
+		free(p);
 		return result;
 	}
 
-	while (next_piece(p) != piece && next_piece(p) != NULL){
+	while ((next_piece(p) != NULL) && (next_piece(p) != piece)){
 		p = next_piece(p);
 	}
 
-	if (next_piece(p) == piece) {
-		result = next_piece(p->next);
-		free(p->next);
-		p->next = NULL;
-
-		p = result;
-
-		while (next_piece(p) != NULL){
-			p = next_piece(p);
-		}
-		p->next = pieces;
-	} else {
-		printf("DEBUG: Piece not found");
+	if (next_piece(p) == NULL) {
+		printf("DEBUG: piece not found");
 		return pieces;
 	}
 
-	return result;
+	if (next_piece(p) == piece) {
+		pieces_t delete = p->next;
+		p->next = next_piece(p->next);
+		free(delete);
+	}
+
+	return pieces;
 }
 
 pieces_t destroy_pieces(pieces_t piece){
@@ -153,48 +148,19 @@ pieces_t destroy_pieces(pieces_t piece){
 	return(p);
 }
 
-/* Moving a piece, old code.. eventually deleted */
-
-
-pieces_t search_piece(pieces_t pieces, char name, int col, int row) {
-	pieces_t piece = NULL;
-	if ((piece_row(pieces) != row) | (piece_column(pieces) != col)) {
-		while((next_piece(pieces) != NULL) & !((piece_row(pieces) == row) & (piece_column(pieces) == col))) {
-			pieces = next_piece(pieces);
-		}
-	}
-	if ((piece_row(pieces) == row) & (piece_column(pieces) == col) & (piece_name(pieces) == name)) {
-		piece = pieces;
-	}
-	return(piece);
-}
-
-pieces_t move_piece(pieces_t pieces, char name, int src_column, int src_row, int dest_column, int dest_row){
-	pieces_t piece = search_piece(pieces, name, src_column, src_row);
+pieces_t search_piece(pieces_t pieces, int column, int row) {
 	pieces_t p = pieces;
-
-	if (piece == NULL){
-		printf("\nPiece not found\n");
-	}
-	else if (pieces != piece){
-		while (next_piece(pieces) != piece){
-			pieces = next_piece(pieces);
+	while (p != NULL){
+		if ((piece_column(p) == column) && (piece_row(p) == row)){
+			return p;
 		}
-		pieces->next = piece->next;
-		piece->position->column = dest_column;
-		piece->position->row = dest_row;
-		piece->next = p;
-		pieces = piece;
+		p = next_piece(p);
 	}
-	else if (pieces == piece){
-		piece->position->column = dest_column;
-		piece->position->row = dest_row;
-	}
-	else {
-		printf("\nDEBUG: something wrong\n");
-	}
-	return(pieces);
+	return NULL;
 }
+
+
+/* for DEBUG */
 
 void print_posible_moves(pieces_t pieces) {
   char columns[8] = {'a','b','c','d','e','f','g','h'};
@@ -221,4 +187,99 @@ void print_posible_moves(pieces_t pieces) {
 		
 	} while ((p = next_piece(p)) != NULL);
 	
+}
+
+// Moves & captures
+
+bool is_pos_move(pieces_t piece, char name, int c, int r){
+	if(piece->name != name){ return false; }
+	if (piece->posible_moves == NULL){ return false; }
+
+	squares_t moves = piece->posible_moves;
+	while(moves->nextSq != NULL){
+		if ((moves->column == c) && (moves->row == r)){
+			return true;
+		}
+		moves = moves->nextSq;
+	} if ((moves->column == c) && (moves->row == r)){
+		return true;
+	}
+
+	return false;
+}
+
+void set_position(pieces_t p, int c, int r){
+	p->position->column = c;
+	p->position->row = r;
+}
+
+pieces_t pawn_move(pieces_t pieces, int c, int r){
+	pieces_t p = pieces;
+	char name = 'P';
+
+	while (p != NULL){
+		if (is_pos_move(p, name, c, r)){
+			set_position(p, c, r);
+		}
+		p = p->next;
+	}
+
+	return pieces;
+}
+
+
+pieces_t pawn_capture(pieces_t pieces, int c_src, int c_dest, int r){
+	if (c_src && c_dest && r){
+		return NULL;
+	}
+	return pieces;
+}
+pieces_t simple_move(pieces_t pieces, char name, int c, int r){
+	if (c && r && name){
+		return NULL;
+	}
+	return pieces;
+}
+pieces_t promotion(pieces_t pieces, int c, int r){
+	if (c && r){
+		return NULL;
+	}
+	return pieces;
+}
+pieces_t capture(pieces_t pieces, char name, int c, int r){
+	if (c && name && r){
+		return NULL;
+	}
+	return pieces;
+}
+
+pieces_t from_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
+	if (c && r_dest && r_src && name){
+		return NULL;
+	}
+	return pieces;
+}
+
+
+pieces_t from_column_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
+	if (r_src && r_dest && c && name){
+		return NULL;
+	}
+	return pieces;
+
+}
+pieces_t capture_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r){
+	if (c_src && c_dest && r && name){
+		return NULL;
+	}
+	return pieces;
+
+}
+
+pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
+	if (r_src && r_dest && c && name){
+		return NULL;
+	}
+	return pieces;
+
 }

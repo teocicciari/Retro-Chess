@@ -35,28 +35,6 @@ char * get_move() {
     return line;
 }
 
-
-board_t move_(board_t board, char * move){
-    int src_row, dest_row;
-    char rows[8] = {'a','b','c','d','e','f','g','h'};
-    
-    for (int i = 0; i < 8; i++) {
-        if(move[1] == rows[i]){
-            src_row = i;
-        } if(move[3] == rows[i]){
-            dest_row = i;
-        }
-    }
-
-    char name = move[0];
-    int src_column = move[2] - '0';
-    int dest_column = move[4] - '0';
-
-    board = make_movement(board, name, src_row, src_column, dest_row, dest_column);
-    free(move);
-    return(board);
-} 
-
 int main(void) {
     char input = 'n';
     char * move;
@@ -89,6 +67,7 @@ int main(void) {
 
     do {
         move = get_move();
+        int len = strlen(move) - 1;
 
         switch (move[0]) {
 	        case RESTART:
@@ -102,7 +81,7 @@ int main(void) {
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
-	            board = move_(board, move);
+                board = move_(board, move, len);
                 print_board(board);
 	            break;
         }
