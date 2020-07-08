@@ -1,4 +1,5 @@
 #include "board.h"
+#include "piece.h"
 
 struct _board_t {
 	pieces_t 		pieces;

@@ -211,16 +211,6 @@ void calculate_moves(pieces_t pieces, char color) {
 	} while ((p = next_piece(p)) != NULL);
 }
 
-int column_to_int(char row){
-	int result = 8;
-    char rows[8] = {'a','b','c','d','e','f','g','h'};
-
-	for (int i = 0; i < 8; i++) {
-		if (row == rows[i]) { result = i;}
-	}
-	return result;
-}
-
 board_t move_(board_t board, char * move, int len){
     char name = move[0];
     int c_src, c_dest, r_src, r_dest;
@@ -233,33 +223,32 @@ board_t move_(board_t board, char * move, int len){
 		r_dest = move[1] - '0';
 		board = set_board(board, pawn_move(pieces, c_dest, r_dest));
 		break;
+
 	case 3:
-		if (move[1] == 'x'){
-			c_src = column_to_int(move[0]);
-			c_dest = column_to_int(move[2]);
-			r_dest = move[3] - '0';
-			board = set_board(board, pawn_capture(pieces, c_src, c_dest, r_dest));
-		} else {
-			c_dest = column_to_int(move[1]);
-			r_dest = move[2] - '0';;
-			board = set_board(board, simple_move(pieces, name, c_dest, r_dest));
-		}
+		c_dest = column_to_int(move[1]);
+		r_dest = move[2] - '0';
+		board = set_board(board, simple_move(pieces, name, c_dest, r_dest));
 		break;
+
 	case 4:
 		if (move[2] == '='){
 			c_dest = column_to_int(move[0]);
 			r_dest = move[1] - '0';
-			board = set_board(board, promotion(pieces, c_dest, r_dest));
-		} else if (move[1] == 'x'){
+			char new_name = move[3];
+			board = set_board(board, promotion(pieces, c_dest, r_dest, new_name));
+		} 
+		else if (move[1] == 'x'){
 			c_dest = column_to_int(move[2]);
 			r_dest = move[3] - '0';
 			board = set_board(board, capture(pieces, name, c_dest, r_dest));
-		} else if (column_to_int(move[1]) == 8) { // It's not a column
+		} 
+		else if (column_to_int(move[1]) == 8) { // It's not a column
 			r_src = move[1] - '0';
 			c_dest = column_to_int(move[2]);
 			r_dest = move[3] - '0';
 			board = set_board(board, from_row_move(pieces, name, r_src, c_dest, r_dest));
-		} else {
+		} 
+		else {
 			c_src = column_to_int(move[1]);
 			c_dest = column_to_int(move[2]);
 			r_dest = move[3] - '0';

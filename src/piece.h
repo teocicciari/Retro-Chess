@@ -19,6 +19,7 @@ char  piece_name(pieces_t piece);
 char piece_name_cap(pieces_t piece);
 char piece_color(pieces_t piece);
 int   piece_column(pieces_t piece);
+int column_to_int(char row);
 int   piece_row(pieces_t piece);
 
 squares_t add_move(int r, int c, squares_t moves);
@@ -30,7 +31,7 @@ void print_posible_moves(pieces_t pieces);
 pieces_t pawn_move(pieces_t pieces, int c, int r);
 pieces_t pawn_capture(pieces_t pieces, int c_src, int c_dest, int r);
 pieces_t simple_move(pieces_t pieces, char name, int c, int r);
-pieces_t promotion(pieces_t pieces, int c, int r);
+pieces_t promotion(pieces_t pieces, int c, int r, char name);
 pieces_t capture(pieces_t pieces, char name, int c, int r);
 pieces_t from_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest);
 pieces_t from_column_move(pieces_t pieces, char name, int r_src, int c, int r_dest);

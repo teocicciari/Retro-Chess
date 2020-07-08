@@ -40,6 +40,7 @@ int main(void) {
     char * move;
 
     board_t board = empty_board();
+    pieces_t pieces;
     
     print_init();
     input = get_input();
@@ -68,6 +69,8 @@ int main(void) {
     do {
         move = get_move();
         int len = strlen(move) - 1;
+        pieces = board_pieces(board);
+        calculate_moves(pieces, 'w');
 
         switch (move[0]) {
 	        case RESTART:
@@ -76,12 +79,17 @@ int main(void) {
                 board = board_init(board);
                 print_board(board);
 	            break;
+	        case BACK:
+                printf("\nCoward, u can't haha\n");
+                break;
 	        case QUIT:
                 board = destroy_board(board);
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
                 board = move_(board, move, len);
+                pieces = board_pieces(board);
+                calculate_moves(pieces, 'w');
                 print_board(board);
 	            break;
         }
