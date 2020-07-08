@@ -17,6 +17,19 @@ char * get_piece() {
     return line;
 }
 
+char * get_move2() {
+    char * line;
+    line = calloc(10, sizeof(char));
+    printf("\n>> ");
+
+    if (fgets(line, sizeof line, stdin) == NULL) {
+        printf("move fail");
+        return(NULL);
+    }
+
+    return line;
+}
+
 char get_input2(void) {
     char input = '\0';
     char line[10];
@@ -54,6 +67,7 @@ board_t put_piece(board_t board){
 void tests(board_t board) {
   print_tests();
   char input;
+  char * move;
   bool quit = false;
   pieces_t pieces = board_pieces(board);
   
@@ -64,6 +78,11 @@ void tests(board_t board) {
     switch (input)
     {
     case MOVE:
+      move = get_move2();
+      int len = strlen(move) - 1;
+      board = move_(board, move, len);
+      pieces = board_pieces(board);
+      calculate_moves(pieces, 'w');
       break;
     case NEW_PIECE:
       board = put_piece(board);

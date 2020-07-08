@@ -229,23 +229,36 @@ pieces_t pawn_move(pieces_t pieces, int c, int r){
 
 
 pieces_t pawn_capture(pieces_t pieces, int c_src, int c_dest, int r){
-	if (c_src && c_dest && r){
-		return NULL;
+	pieces_t p = pieces;
+	pieces_t delete;
+	char name = 'P';
+
+	while (p != NULL){
+		if ((is_pos_move(p, name, c_dest, r)) && (c_src == piece_column(p))){
+			delete = search_piece(pieces, c_dest, r);
+			delete_piece(pieces, delete);
+			set_position(p, c_dest, r);
+		}
+		p = p->next;
 	}
+
 	return pieces;
 }
+
 pieces_t simple_move(pieces_t pieces, char name, int c, int r){
 	if (c && r && name){
 		return NULL;
 	}
 	return pieces;
 }
+
 pieces_t promotion(pieces_t pieces, int c, int r){
 	if (c && r){
 		return NULL;
 	}
 	return pieces;
 }
+
 pieces_t capture(pieces_t pieces, char name, int c, int r){
 	if (c && name && r){
 		return NULL;
@@ -266,14 +279,12 @@ pieces_t from_column_move(pieces_t pieces, char name, int r_src, int c, int r_de
 		return NULL;
 	}
 	return pieces;
-
 }
 pieces_t capture_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r){
 	if (c_src && c_dest && r && name){
 		return NULL;
 	}
 	return pieces;
-
 }
 
 pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
@@ -281,5 +292,4 @@ pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_de
 		return NULL;
 	}
 	return pieces;
-
 }

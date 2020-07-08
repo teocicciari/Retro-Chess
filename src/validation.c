@@ -178,7 +178,7 @@ void calculate_moves(pieces_t pieces, char color) {
 	squares_t moves;
 
 	do {
-		if (piece_color(p) == color) {
+		if (p != NULL && piece_color(p) == color) {
 			moves = NULL;
 
 			switch (piece_name_cap(p))
@@ -237,7 +237,7 @@ board_t move_(board_t board, char * move, int len){
 		if (move[1] == 'x'){
 			c_src = column_to_int(move[0]);
 			c_dest = column_to_int(move[2]);
-			r_dest = move[2] - '0';
+			r_dest = move[3] - '0';
 			board = set_board(board, pawn_capture(pieces, c_src, c_dest, r_dest));
 		} else {
 			c_dest = column_to_int(move[1]);
