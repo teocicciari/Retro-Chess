@@ -43,7 +43,7 @@ board_t AI_response(board_t board, char color){
     
     do {
         piece = get_random_piece(pieces);
-    } while ((piece_color(piece) != color) && (!can_move(piece)));
+    } while ((piece_color(piece) != color) || (!can_move(piece)));
     
     move = get_random_move(piece);
     char column = get_column(move);
