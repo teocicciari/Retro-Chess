@@ -13,6 +13,7 @@ void quit_message();
 void quit_message2();
 void first_move_message();
 void move_message();
+void thinking();
 void standard_message();
 void check();
 

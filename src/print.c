@@ -83,3 +83,10 @@ void check(){
   // TODO: choose a check message
   printf(" ");
 }
+
+void thinking(){
+  printf("Thinking...");
+  printf("\n");
+
+  sleep(3);
+}

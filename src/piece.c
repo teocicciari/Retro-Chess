@@ -20,6 +20,17 @@ pieces_t empty_pieces(){
 	return(pieces);
 }
 
+int get_pieces_count(pieces_t pieces){
+	int count = 0;
+	pieces_t p = pieces;
+	do {
+		count++;
+		p = next_piece(p);
+	} while (p != NULL);
+
+	return count;
+}
+
 char piece_name_cap(pieces_t piece){
 	return(toupper(piece->name));
 }
@@ -38,6 +49,21 @@ char piece_color(pieces_t piece){
 
 int piece_column(pieces_t piece){
 	return(piece->position->column);
+}
+
+int get_column(squares_t square){
+	return square->column;
+}
+
+int get_row(squares_t square){
+	return square->row;
+}
+
+bool can_move(pieces_t piece){
+	if (piece->posible_moves != 0x0){
+		return true;
+	}
+	return false;
 }
 
 int column_to_int(char row){
@@ -73,13 +99,34 @@ squares_t concat_moves(squares_t a, squares_t b){
 	return result;
 }
 
+squares_t get_posible_moves(pieces_t piece){
+	return piece->posible_moves;
+}
+
 void set_posible_moves(pieces_t piece, squares_t moves){
 	piece->posible_moves = moves;
+}
+
+int get_moves_count(pieces_t piece){
+	int count = 0;
+	squares_t move = piece->posible_moves;
+	if (move == NULL) { return count; }
+
+	do{
+		count++;
+		move = move->nextSq;
+	} while (move != NULL);
+
+	return count;
 }
 
 void set_position(pieces_t p, int c, int r){
 	p->position->column = c;
 	p->position->row = r;
+}
+
+squares_t next_square(squares_t square){
+	return square->nextSq;
 }
 
 bool is_posible_move(pieces_t pieces, char name, int r, int c){
@@ -183,7 +230,7 @@ pieces_t search_piece(pieces_t pieces, int column, int row) {
 /* for DEBUG */
 
 void print_posible_moves(pieces_t pieces) {
-  char columns[8] = {'a','b','c','d','e','f','g','h'};
+  	char columns[8] = {'a','b','c','d','e','f','g','h'};
 	pieces_t p = pieces;
 	squares_t moves;
 	char c;

@@ -3,7 +3,7 @@
 
 struct _board_t {
 	pieces_t 		pieces;
-	unsigned int 	length;
+	int 			length;
 };
 
 board_t empty_board(){
@@ -30,11 +30,16 @@ board_t destroy_board(board_t board){
 
 board_t add_piece_to_board(board_t board, char name, char color, int r, int c) {
 	board->pieces = add_piece(board->pieces, name, color, r, c);
+	board->length++;
 	return board;
 }
 
 pieces_t board_pieces(board_t board){
 	return board->pieces;
+}
+
+void set_board_lenght(board_t board, int len){
+	board->length = len;
 }
 
 board_t set_board(board_t board, pieces_t pieces){

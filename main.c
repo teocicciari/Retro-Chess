@@ -3,6 +3,8 @@
 #include "src/piece.h"
 #include "src/board.h"
 #include "src/print.h"
+#include "src/AI.h"
+
 #include "tests/test.h"
 
 #define START     's'
@@ -53,6 +55,7 @@ int main(void) {
         break;
     case OPTIONS:
         print_options();
+        board = board_init(board);
         break;
     case TEST:
         tests(board);
@@ -90,6 +93,11 @@ int main(void) {
                 board = move_(board, move, len);
                 pieces = board_pieces(board);
                 calculate_moves(pieces, 'w');
+                print_board(board);
+
+                thinking();
+                
+                board = AI_response(board, 'b');
                 print_board(board);
 	            break;
         }
