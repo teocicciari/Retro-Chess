@@ -5,9 +5,9 @@
 
 void print_init() {
   
-    printf(   "\n\t     ****************************\n"
-                "\t     ********CHESSPROGRAM********\n"
-                "\t     ****************************\n");
+    printf(   "\n\t     * * * * * * * * * * * * * * *\n"
+                "\t     * * * * RETRO CHESS * * * * *\n"
+                "\t     * * * * * * * * * * * * * * *\n");
 
     printf("\nAn advance chess IA locked in this old ASCII interface\n\n");
     sleep(2);

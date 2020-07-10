@@ -1,6 +1,6 @@
-# chessprogram
+# Retro chess
 
-This is a chess program completely written in C Programming Language (C99 standard). It is without GUI, so it can be played on linux terminal.
+This is a chess program completely written from the ground in C Programming Language to be played on linux terminal.
 
 I began to write it to strengthen my knowledge adquired in the course *Algorithms and data structures II* of my carrer, and it was improved together with my skills.
 
