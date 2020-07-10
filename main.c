@@ -41,6 +41,7 @@ int main(void) {
     char input = 'n';
     char * move;
 
+    board_t b;
     board_t board = empty_board();
     pieces_t pieces;
     
@@ -90,7 +91,11 @@ int main(void) {
 	            quit_message2();
 	            return (EXIT_SUCCESS);
 	        default:
-                board = move_(board, move, len);
+                while ((b = move_(board, move, len)) == NULL){
+                    move = get_move();
+                }
+                board = b;
+                
                 pieces = board_pieces(board);
                 calculate_moves(pieces, 'w');
                 print_board(board);

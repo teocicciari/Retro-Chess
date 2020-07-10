@@ -14,7 +14,6 @@ void print_init() {
                 
     printf("\t     *   s: Start a new game!    *\n"
            "\t     *        o: Options         *\n"
-           "\t     *          t: Tests         *\n"
            "\t     *          q: Quit          *\n\n"
 			);
 
