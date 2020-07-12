@@ -10,7 +10,7 @@ void print_init() {
                 "\t     * * * * * * * * * * * * * * *\n");
 
     printf("\nAn advance chess IA locked in this old ASCII interface\n\n");
-    sleep(2);
+    // sleep(2);
                 
     printf("\t     *   s: Start a new game!    *\n"
            "\t     *        o: Options         *\n"
@@ -37,32 +37,32 @@ void print_menu() {
 
 void print_options() {
   printf("\nNo options. let's play!\n\n");
-  sleep(2);
+  // sleep(2);
 }
 
 void start_message(){
   // TODO: choose a welcom message
   printf("\nFirst I have to give you a warning:\n");
-  sleep(2);
+  // sleep(2);
   printf("there is NO WAY you can beat me\n"); 
-  sleep(2);
+  // sleep(2);
   printf("enjoy your death\n\n"); 
-  sleep(2);
+  // sleep(2);
 }
 
 void quit_message(){
   printf("\nU don't want to play?\n");
-  sleep(2);
+  // sleep(2);
   printf("me neither.\n");
-  sleep(2);
+  // sleep(2);
   printf("BYE!\n");
 }
 
 void quit_message2(){
   printf("\nAre you sure?\n");
-  sleep(1);
+  // sleep(1);
   printf("I'm having a great time with you!\n");
-  sleep(2);
+  // sleep(2);
 }
 
 void first_move_message(){
@@ -87,5 +87,5 @@ void thinking(){
   printf("Thinking...");
   printf("\n");
 
-  sleep(3);
+  // sleep(3);
 }

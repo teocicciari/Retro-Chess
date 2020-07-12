@@ -4,3 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+#define BLACK 'b'
+#define WHITE 'w'

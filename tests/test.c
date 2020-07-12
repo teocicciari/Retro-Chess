@@ -93,7 +93,6 @@ void tests(board_t board) {
     case PRINT_PIECES:
       pieces = board_pieces(board);
       print_board(board);
-      print_posible_moves(pieces);
       break;
     case QUIT:
       quit = true;

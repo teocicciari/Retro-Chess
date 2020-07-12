@@ -93,6 +93,7 @@ int main(void) {
 	        default:
                 while ((b = move_(board, move, len)) == NULL){
                     move = get_move();
+                    len = strlen(move) - 1;
                 }
                 board = b;
                 

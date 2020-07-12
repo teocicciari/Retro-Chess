@@ -1,4 +1,5 @@
 #include "piece.h"
+#include "square.h"
 #include "validation.h"
 #include "AI.h"
 
@@ -21,17 +22,18 @@ pieces_t get_random_piece(pieces_t pieces){
 
 squares_t get_random_move(pieces_t piece){
     time_t t;
-    squares_t square = get_posible_moves(piece);
-    int len = get_moves_count(piece);
+    squares_t moves = get_posible_moves(piece);
+    
+    int len = get_moves_count(moves);
     srand((unsigned) time(&t));
     int index = rand() % len;
 
     while (index > 0){
         index--;
-        square = next_square(square);
+        moves = next_square(moves);
     }
 
-    return square;
+    return moves;
 }
 
 board_t AI_response(board_t board, char color){

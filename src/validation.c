@@ -1,5 +1,12 @@
 #include "validation.h"
 
+bool can_move(pieces_t piece){
+	if (get_posible_moves(piece) != NULL){
+		return true;
+	}
+	return false;
+}
+
 bool is_valid_square(int r, int c) {
 	if (r < 1 || r > 8 || c < 0 || c > 7) {
 		return false;
@@ -45,6 +52,40 @@ bool valid_and_empty_or_capture(int r, int c, int color, pieces_t pieces){
 	} else {
 		return false;
 	}
+}
+
+bool is_posible_move(pieces_t pieces, char name, int r, int c){
+	squares_t moves;
+
+	do {
+		if (piece_name(pieces) == name) {
+			moves = get_posible_moves(pieces);
+			do {
+				if (get_column(moves) == c && get_row(moves) == r){
+					return true;
+				}
+			} while ((moves = next_square(moves)) != NULL);
+		}
+	} while ((pieces = next_piece(pieces)) != NULL);
+
+	return false;
+}
+
+bool is_pos_move(pieces_t piece, char name, int c, int r){
+	if (piece_name(piece) != name){ return false; }
+	if (get_posible_moves(piece) == NULL){ return false; }
+
+	squares_t moves = get_posible_moves(piece);
+	while(next_square(moves) != NULL){
+		if ((get_column(moves) == c) && (get_row(moves) == r)){
+			return true;
+		}
+		moves = next_square(moves);
+	} if ((get_column(moves) == c) && (get_row(moves) == r)){
+		return true;
+	}
+
+	return false;
 }
 
 squares_t pawn_moves(pieces_t pawn, pieces_t pieces){
@@ -211,6 +252,160 @@ void calculate_moves(pieces_t pieces, char color) {
 	} while ((p = next_piece(p)) != NULL);
 }
 
+// Moves
+
+pieces_t pawn_move(pieces_t pieces, int c, int r){
+	pieces_t p = pieces;
+	char name = 'P';
+
+	while (p != NULL){
+		if (is_pos_move(p, name, c, r)){
+			set_position(p, c, r);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+pieces_t simple_move(pieces_t pieces, char name, int c, int r){
+	pieces_t p = pieces;
+
+	while (p != NULL){
+		if (piece_name(p) == name && is_pos_move(p, name, c, r) &&
+					is_empty_square(r, c, pieces)){
+			set_position(p, c, r);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+pieces_t promotion(pieces_t pieces, int c, int r, char new_name){
+	pieces_t p = pieces;
+	char name = 'P';
+
+	while (p != NULL){
+		if (is_pos_move(p, name, c, r)){
+			set_position(p, c, r);
+			set_name(p, new_name);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+bool is_pawn(char name){
+	char pos[5] = {'Q','N','B','R','K'};
+	for (int i = 0; i<5; i++){
+		if (pos[i] == name){
+			return false;
+		}
+	}
+	return true;
+}
+
+pieces_t capture(pieces_t pieces, char name, int c, int r){
+	// could be a pawn capture!
+	pieces_t delete;
+	pieces_t p = pieces;
+
+	if (is_pawn(name)){
+		while (p != NULL){
+			if (is_pos_move(p, 'P', c, r) && 
+					piece_column(p) == column_to_int(name)){
+				delete = search_piece(pieces, c, r);
+				pieces = delete_piece(pieces, delete);
+				set_position(p, c, r);
+			}
+		p = next_piece(p);
+		}
+	}
+	else {
+		while (p != NULL){
+			if (is_pos_move(p, name, c, r)){
+				delete = search_piece(pieces, c, r);
+				pieces = delete_piece(pieces, delete);
+				set_position(p, c, r);
+			}
+		p = next_piece(p);
+		}
+	}
+
+	return pieces;
+}
+
+pieces_t from_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
+	pieces_t p = pieces;
+
+	while (p != NULL){
+		if (piece_name(p) == name && is_pos_move(p, name, c, r_dest) &&
+					r_src == piece_row(p) &&
+					is_empty_square(r_dest, c, pieces)){
+			set_position(p, c, r_dest);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+pieces_t from_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r_dest){
+	pieces_t p = pieces;
+
+	while (p != NULL){
+		if (piece_name(p) == name && is_pos_move(p, name, c_dest, r_dest) &&
+					c_src == piece_column(p) &&
+					is_empty_square(r_dest, c_dest, pieces)){
+			set_position(p, c_dest, r_dest);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+pieces_t capture_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r){
+	pieces_t p = pieces;
+	pieces_t delete;
+
+	while (p != NULL){
+		if (piece_name(p) == name && is_pos_move(p, name, c_dest, r) &&
+					c_src == piece_column(p) &&
+					is_empty_square(r, c_dest, pieces)){
+
+			delete = search_piece(pieces, c_dest, r);
+			pieces = delete_piece(pieces, delete);
+			set_position(p, c_dest, r);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
+	pieces_t p = pieces;
+	pieces_t delete;
+
+	while (p != NULL){
+		if (piece_name(p) == name && is_pos_move(p, name, c, r_dest) &&
+					r_src == piece_row(p) &&
+					is_empty_square(r_dest, c, pieces)){
+
+			delete = search_piece(pieces, c, r_dest);
+			pieces = delete_piece(pieces, delete);
+			set_position(p, c, r_dest);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+
 board_t move_(board_t board, char * move, int len){
     char name = move[0];
     int c_src, c_dest, r_src, r_dest;
@@ -273,13 +468,3 @@ board_t move_(board_t board, char * move, int len){
     free(move);
     return(board);
 } 
-
-/*
-bool is_in_check(int r, int c, int color, pieces_t pieces){
-	// TODO: Check if the king can move to that square without being devored
-	// 1 - calculate enemy moves
-	// 2 - check if (r, c) is in the posible_moves of the enemy
-	// situation: recursive loop if there is only one square between kings
-	return false;
-}
-*/
