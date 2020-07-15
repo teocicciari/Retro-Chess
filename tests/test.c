@@ -71,7 +71,6 @@ void tests(board_t board) {
   char input;
   char * move;
   bool quit = false;
-  pieces_t pieces = get_board_pieces(board);
   
   do
   {
@@ -83,17 +82,14 @@ void tests(board_t board) {
       move = get_move2();
       int len = strlen(move) - 1;
       board = move_(board, move, len);
-      pieces = get_board_pieces(board);
-      calculate_moves(pieces, 'w');
+      calculate_moves(board, 'w');
       break;
     case NEW_PIECE:
       board = put_piece(board);
-      pieces = get_board_pieces(board);
-      calculate_moves(pieces, 'w');
-      calculate_moves(pieces, 'b');
+      calculate_moves(board, 'w');
+      calculate_moves(board, 'b');
       break;
     case PRINT_PIECES:
-      pieces = get_board_pieces(board);
       print_board(board);
       break;
     case QUIT:

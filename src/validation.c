@@ -55,6 +55,9 @@ bool valid_and_empty_or_capture(pieces_t pieces, int r, int c, int color){
 }
 
 bool is_posible_move(pieces_t pieces, char name, int r, int c){
+	/*
+	Take all the pieces and check if some piece match the move
+	*/
 	squares_t moves;
 
 	do {
@@ -71,7 +74,10 @@ bool is_posible_move(pieces_t pieces, char name, int r, int c){
 	return false;
 }
 
-bool is_pos_move(pieces_t piece, char name, int r, int c){
+bool is_legal_move(pieces_t piece, char name, int r, int c){
+	/*
+	Check if the piece given is legal 
+	*/
 	if (piece_name(piece) != name){ return false; }
 	if (get_posible_moves(piece) == NULL){ return false; }
 
@@ -213,10 +219,11 @@ squares_t king_moves(pieces_t king, pieces_t pieces){
 	return result;
 }
 
-void calculate_moves(pieces_t pieces, char color) {
-	pieces_t p = pieces;
+void calculate_moves(board_t board, char color) {
+	pieces_t pieces = get_board_pieces(board);
 	squares_t moves;
 
+	pieces_t p = pieces;
 	do {
 		if (p != NULL && piece_color(p) == color) {
 			moves = NULL;
@@ -258,7 +265,7 @@ pieces_t pawn_move(pieces_t pieces, int r, int c){
 	char name = 'P';
 
 	while (p != NULL){
-		if (is_pos_move(p, name, r, c)){
+		if (is_legal_move(p, name, r, c)){
 			set_position(p, r, c);
 		}
 		p = next_piece(p);
@@ -271,7 +278,7 @@ pieces_t simple_move(pieces_t pieces, char name, int r, int c){
 	pieces_t p = pieces;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, r, c) &&
+		if (piece_name(p) == name && is_legal_move(p, name, r, c) &&
 					is_empty_square(pieces, r, c)){
 			set_position(p, r, c);
 		}
@@ -286,7 +293,7 @@ pieces_t promotion(pieces_t pieces, int r, int c, char new_name){
 	char name = 'P';
 
 	while (p != NULL){
-		if (is_pos_move(p, name, r, c)){
+		if (is_legal_move(p, name, r, c)){
 			set_position(p, r, c);
 			set_name(p, new_name);
 		}
@@ -320,7 +327,7 @@ pieces_t capture(pieces_t pieces, char name, int r, int c){
 	}
 
 	while (p != NULL){
-		if (is_pos_move(p, name, r, c)){
+		if (is_legal_move(p, name, r, c)){
 			delete = search_piece(pieces, r, c);
 			pieces = delete_piece(pieces, delete);
 			set_position(p, r, c);
@@ -335,7 +342,7 @@ pieces_t from_row_move(pieces_t pieces, char name, int r_src, int r_dest, int c)
 	pieces_t p = pieces;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, r_dest, c) &&
+		if (piece_name(p) == name && is_legal_move(p, name, r_dest, c) &&
 				r_src == piece_row(p) && is_empty_square(pieces, r_dest, c)){
 			set_position(p, r_dest, c);
 		}
@@ -349,7 +356,7 @@ pieces_t from_column_move(pieces_t pieces, char name, int r_dest, int c_src, int
 	pieces_t p = pieces;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, r_dest, c_dest) &&
+		if (piece_name(p) == name && is_legal_move(p, name, r_dest, c_dest) &&
 					c_src == piece_column(p) &&
 					is_empty_square(pieces, r_dest, c_dest)){
 			set_position(p, r_dest, c_dest);
@@ -365,7 +372,7 @@ pieces_t capture_column_move(pieces_t pieces, char name, int r, int c_src, int c
 	pieces_t delete;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, r, c_dest) &&
+		if (piece_name(p) == name && is_legal_move(p, name, r, c_dest) &&
 					c_src == piece_column(p) &&
 					is_empty_square(pieces, r, c_dest)){
 
@@ -384,7 +391,7 @@ pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int r_dest, int
 	pieces_t delete;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, r_dest, c) &&
+		if (piece_name(p) == name && is_legal_move(p, name, r_dest, c) &&
 					r_src == piece_row(p) &&
 					is_empty_square(pieces, r_dest, c)){
 

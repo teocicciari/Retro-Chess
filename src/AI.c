@@ -8,7 +8,7 @@ board_t AI_response(board_t board, char color){
     pieces_t piece, delete;
     squares_t moves, move;
 
-    calculate_moves(pieces, color);
+    calculate_moves(board, color);
     
     // Choose a random piece
     do {

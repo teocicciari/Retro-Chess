@@ -42,7 +42,6 @@ int main(void) {
 
     board_t b;
     board_t board = empty_board();
-    pieces_t pieces;
     
     print_init();
     input = get_input();
@@ -72,8 +71,7 @@ int main(void) {
     do {
         move = get_move();
         int len = strlen(move) - 1;
-        pieces = get_board_pieces(board);
-        calculate_moves(pieces, 'w');
+        calculate_moves(board, 'w');
 
         switch (move[0]) {
 	        case RESTART:
@@ -94,9 +92,8 @@ int main(void) {
                     len = strlen(move) - 1;
                 }
                 board = b;
-                
-                pieces = get_board_pieces(board);
-                calculate_moves(pieces, 'w');
+
+                calculate_moves(board, 'w');
                 print_board(board);
 
                 thinking();

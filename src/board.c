@@ -2,21 +2,39 @@
 #include "piece.h"
 
 struct _board_t {
-	pieces_t 		pieces;
-	int 			length;
+	pieces_t 	pieces;
+
+	char *		last_move;
+	bool		w_long_castle;
+	bool		w_short_castle;
+	bool		b_long_castle;
+	bool		b_short_castle;
+	bool		game_finished;
 };
 
 board_t empty_board(){
 	board_t board;
+
 	board = calloc(1, sizeof(struct _board_t));
 	board->pieces = empty_pieces();
-	board->length = 0;
+
+	board->last_move = NULL;
+	board->w_long_castle = 0;
+	board->w_short_castle = 0;
+	board->b_long_castle = 0;
+	board->b_short_castle = 0;
+	board->game_finished = 0;
+
 	return(board);
 }
 
 board_t board_init(board_t board){
-	board->length = 32;
 	board->pieces = set_initial_position(board->pieces);
+	board->w_long_castle = 1;
+	board->w_short_castle = 1;
+	board->b_long_castle = 1;
+	board->b_short_castle = 1;
+
 	return(board);
 }
 
