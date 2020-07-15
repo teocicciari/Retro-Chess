@@ -5,17 +5,17 @@
 
 void print_init() {
   
-    printf(   "\n\t     * * * * * * * * * * * * * * *\n"
-                "\t     * * * * RETRO CHESS * * * * *\n"
-                "\t     * * * * * * * * * * * * * * *\n");
+    printf("\n"
+            "\t     * * * * * * * * * * * * * * *\n"
+            "\t     * * * * RETRO CHESS * * * * *\n"
+            "\t     * * * * * * * * * * * * * * *\n");
 
     printf("\nAn advance chess IA locked in this old ASCII interface\n\n");
     // sleep(2);
                 
     printf("\t     *   s: Start a new game!    *\n"
            "\t     *        o: Options         *\n"
-           "\t     *          q: Quit          *\n\n"
-			);
+           "\t     *          q: Quit          *\n\n");
 
     printf("Which one? ");
 }

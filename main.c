@@ -73,7 +73,7 @@ int main(void) {
     do {
         move = get_move();
         int len = strlen(move) - 1;
-        pieces = board_pieces(board);
+        pieces = get_board_pieces(board);
         calculate_moves(pieces, 'w');
 
         switch (move[0]) {
@@ -97,7 +97,7 @@ int main(void) {
                 }
                 board = b;
                 
-                pieces = board_pieces(board);
+                pieces = get_board_pieces(board);
                 calculate_moves(pieces, 'w');
                 print_board(board);
 

@@ -59,7 +59,9 @@ board_t put_piece(board_t board){
       }
   }
 
-  board = add_piece_to_board(board, name, color, row, column);
+  pieces_t pieces = get_board_pieces(board);
+  pieces = new_piece(pieces, name, color, row, column);
+  board = set_board(board, pieces);
   free(piece);
   return(board);
 } 
@@ -69,7 +71,7 @@ void tests(board_t board) {
   char input;
   char * move;
   bool quit = false;
-  pieces_t pieces = board_pieces(board);
+  pieces_t pieces = get_board_pieces(board);
   
   do
   {
@@ -81,17 +83,17 @@ void tests(board_t board) {
       move = get_move2();
       int len = strlen(move) - 1;
       board = move_(board, move, len);
-      pieces = board_pieces(board);
+      pieces = get_board_pieces(board);
       calculate_moves(pieces, 'w');
       break;
     case NEW_PIECE:
       board = put_piece(board);
-      pieces = board_pieces(board);
+      pieces = get_board_pieces(board);
       calculate_moves(pieces, 'w');
       calculate_moves(pieces, 'b');
       break;
     case PRINT_PIECES:
-      pieces = board_pieces(board);
+      pieces = get_board_pieces(board);
       print_board(board);
       break;
     case QUIT:

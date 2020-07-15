@@ -37,7 +37,7 @@ squares_t get_random_move(pieces_t piece){
 }
 
 board_t AI_response(board_t board, char color){
-	pieces_t pieces = board_pieces(board);
+	pieces_t pieces = get_board_pieces(board);
     pieces_t piece, delete;
     squares_t move;
 

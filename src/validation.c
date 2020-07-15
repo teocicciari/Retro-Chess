@@ -407,9 +407,10 @@ pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_de
 
 
 board_t move_(board_t board, char * move, int len){
+	pieces_t pieces = get_board_pieces(board);
+
     char name = move[0];
     int c_src, c_dest, r_src, r_dest;
-	pieces_t pieces = board_pieces(board);
 
 	switch (len)
 	{

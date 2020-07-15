@@ -14,14 +14,12 @@ struct _piece_t {
 	pieces_t 	next;
 };
 
-// Initialization
-
 pieces_t empty_pieces(){
 	pieces_t pieces = NULL;
 	return(pieces);
 }
 
-pieces_t add_piece(pieces_t pieces, char name, char color, int r, int c){
+pieces_t new_piece(pieces_t pieces, char name, char color, int r, int c){
 	pieces_t piece = calloc(1, sizeof(struct _piece_t));
 
 	piece->name = name;
@@ -34,8 +32,6 @@ pieces_t add_piece(pieces_t pieces, char name, char color, int r, int c){
 
 	return(piece);
 }
-
-// Set and get info of pieces
 
 int get_pieces_count(pieces_t pieces){
 	int count = 0;
@@ -69,8 +65,6 @@ squares_t get_posible_moves(pieces_t piece){
 	return piece->posible_moves;
 }
 
-// Name
-
 char piece_name(pieces_t piece){
 	return(piece->name);
 }
@@ -82,8 +76,6 @@ char piece_name_cap(pieces_t piece){
 void set_name(pieces_t piece, char name){
 	piece->name = name;
 }
-
-// Position
 
 int piece_row(pieces_t piece){
 	return(piece->position->row);
@@ -104,7 +96,6 @@ int column_to_int(char row){
 	return result;
 }
 
-// Delete
 
 pieces_t delete_piece(pieces_t pieces, pieces_t piece){
 	pieces_t p = pieces;

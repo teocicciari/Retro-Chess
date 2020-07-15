@@ -1,22 +1,25 @@
-#ifndef board_H
-#define board_H
+#ifndef BOARD_H
+#define BOARD_H
 
 #include "../includes.h"
 #include "piece.h"
 
 typedef struct _board_t *board_t;
 
-board_t empty_board();
-board_t board_init(board_t board);
-board_t destroy_board(board_t board);
-board_t make_movement(board_t board, char name, int src_column, int src_row, int dest_columnest, int rowDest);
-board_t add_piece_to_board(board_t board, char name, char color, int r, int c);
+// Initialization
+board_t     empty_board();
+board_t     board_init(board_t board);
+pieces_t    set_initial_position(pieces_t pieces);
 
-void print_board(board_t board);
+// Set & get info
+pieces_t    get_board_pieces(board_t board);
+board_t     set_board(board_t board, pieces_t pieces);
 
-pieces_t initial_position(pieces_t pieces);
+// Print
+void        print_board(board_t board);
 
-pieces_t board_pieces(board_t board);
-board_t set_board(board_t board, pieces_t pieces);
+// Releasing
+board_t     destroy_board(board_t board);
+
 
 #endif

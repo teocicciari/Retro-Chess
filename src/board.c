@@ -16,7 +16,7 @@ board_t empty_board(){
 
 board_t board_init(board_t board){
 	board->length = 32;
-	board->pieces = initial_position(board->pieces);
+	board->pieces = set_initial_position(board->pieces);
 	return(board);
 }
 
@@ -28,18 +28,8 @@ board_t destroy_board(board_t board){
 	return(board);
 }
 
-board_t add_piece_to_board(board_t board, char name, char color, int r, int c) {
-	board->pieces = add_piece(board->pieces, name, color, r, c);
-	board->length++;
-	return board;
-}
-
-pieces_t board_pieces(board_t board){
+pieces_t get_board_pieces(board_t board){
 	return board->pieces;
-}
-
-void set_board_lenght(board_t board, int len){
-	board->length = len;
 }
 
 board_t set_board(board_t board, pieces_t pieces){
@@ -47,30 +37,30 @@ board_t set_board(board_t board, pieces_t pieces){
 	return board;
 }
 
-pieces_t initial_position(pieces_t pieces){
-	pieces = add_piece(pieces, 'R', 'w', 1, 0);
-	pieces = add_piece(pieces, 'N', 'w', 1, 1);
-	pieces = add_piece(pieces, 'B', 'w', 1, 2);
-	pieces = add_piece(pieces, 'Q', 'w', 1, 3);
-	pieces = add_piece(pieces, 'K', 'w', 1, 4);
-	pieces = add_piece(pieces, 'B', 'w', 1, 5);
-	pieces = add_piece(pieces, 'N', 'w', 1, 6);
-	pieces = add_piece(pieces, 'R', 'w', 1, 7);
+pieces_t set_initial_position(pieces_t pieces){
+	pieces = new_piece(pieces, 'R', 'w', 1, 0);
+	pieces = new_piece(pieces, 'N', 'w', 1, 1);
+	pieces = new_piece(pieces, 'B', 'w', 1, 2);
+	pieces = new_piece(pieces, 'Q', 'w', 1, 3);
+	pieces = new_piece(pieces, 'K', 'w', 1, 4);
+	pieces = new_piece(pieces, 'B', 'w', 1, 5);
+	pieces = new_piece(pieces, 'N', 'w', 1, 6);
+	pieces = new_piece(pieces, 'R', 'w', 1, 7);
 
-	pieces = add_piece(pieces, 'r', 'b', 8, 0);
-	pieces = add_piece(pieces, 'n', 'b', 8, 1);
-	pieces = add_piece(pieces, 'b', 'b', 8, 2);
-	pieces = add_piece(pieces, 'q', 'b', 8, 3);
-	pieces = add_piece(pieces, 'k', 'b', 8, 4);
-	pieces = add_piece(pieces, 'b', 'b', 8, 5);
-	pieces = add_piece(pieces, 'n', 'b', 8, 6);
-	pieces = add_piece(pieces, 'r', 'b', 8, 7);
+	pieces = new_piece(pieces, 'r', 'b', 8, 0);
+	pieces = new_piece(pieces, 'n', 'b', 8, 1);
+	pieces = new_piece(pieces, 'b', 'b', 8, 2);
+	pieces = new_piece(pieces, 'q', 'b', 8, 3);
+	pieces = new_piece(pieces, 'k', 'b', 8, 4);
+	pieces = new_piece(pieces, 'b', 'b', 8, 5);
+	pieces = new_piece(pieces, 'n', 'b', 8, 6);
+	pieces = new_piece(pieces, 'r', 'b', 8, 7);
 
 	for (int i=0;i<8;i++){
-		pieces = add_piece(pieces, 'p', 'b', 7, i);
+		pieces = new_piece(pieces, 'p', 'b', 7, i);
 	}
 	for (int i=0;i<8;i++){
-		pieces = add_piece(pieces, 'P', 'w', 2, i);
+		pieces = new_piece(pieces, 'P', 'w', 2, i);
 	}
 	return(pieces);
 }
