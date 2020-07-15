@@ -107,5 +107,5 @@ void print_board(board_t board){
 		}
 	}
 	printf("\t    | a | b | c | d | e | f | g | h |\n\n");
-	printf("     q: exit to menu // b: one move back // r: restart game\n\n");
+	printf("\t   q: exit to menu - r: restart game\n\n");
 }

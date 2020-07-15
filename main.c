@@ -11,7 +11,6 @@
 #define TEST      't'
 #define RESTART   'r'
 #define OPTIONS   'o'
-#define BACK      'b'
 #define QUIT      'q'
 
 char get_input(void) {
@@ -83,13 +82,12 @@ int main(void) {
                 board = board_init(board);
                 print_board(board);
 	            break;
-	        case BACK:
-                printf("\nCoward, u can't haha\n");
-                break;
+
 	        case QUIT:
                 board = destroy_board(board);
 	            quit_message2();
 	            return (EXIT_SUCCESS);
+                
 	        default:
                 while ((b = move_(board, move, len)) == NULL){
                     move = get_move();

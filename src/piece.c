@@ -33,7 +33,7 @@ pieces_t new_piece(pieces_t pieces, char name, char color, int r, int c){
 	return(piece);
 }
 
-int get_pieces_count(pieces_t pieces){
+int count_pieces(pieces_t pieces){
 	int count = 0;
 	pieces_t p = pieces;
 	do {
@@ -44,6 +44,22 @@ int get_pieces_count(pieces_t pieces){
 	return count;
 }
 
+pieces_t get_random_piece(pieces_t pieces){
+    pieces_t piece = pieces;
+    time_t t;
+
+    int len = count_pieces(pieces);
+    srand((unsigned) time(&t));
+
+    int index = rand() % len;
+    while (index != 0){
+        index--;
+        piece = next_piece(piece);
+    }
+
+    return piece;
+}
+
 char piece_color(pieces_t piece){
 	return(piece->color);
 }
@@ -52,9 +68,9 @@ pieces_t next_piece(pieces_t piece){
 	return(piece->next);
 }
 
-void set_position(pieces_t p, int c, int r){
-	p->position->column = c;
+void set_position(pieces_t p, int r, int c){
 	p->position->row = r;
+	p->position->column = c;
 }
 
 void set_posible_moves(pieces_t piece, squares_t moves){
@@ -136,7 +152,7 @@ pieces_t destroy_pieces(pieces_t piece){
 	return(p);
 }
 
-pieces_t search_piece(pieces_t pieces, int column, int row) {
+pieces_t search_piece(pieces_t pieces, int row, int column) {
 	pieces_t p = pieces;
 	while (p != NULL){
 		if ((piece_column(p) == column) && (piece_row(p) == row)){

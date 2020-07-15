@@ -48,6 +48,7 @@ void start_message(){
   // sleep(2);
   printf("enjoy your death\n\n"); 
   // sleep(2);
+  printf("\t     * * * * GAME STARTED! * * * *\n\n");
 }
 
 void quit_message(){

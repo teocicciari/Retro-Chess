@@ -15,7 +15,7 @@ bool is_valid_square(int r, int c) {
 	}
 }
 
-bool is_empty_square(int r, int c, pieces_t pieces) {
+bool is_empty_square(pieces_t pieces, int r, int c) {
 	while (pieces != NULL){
 		if(piece_row(pieces) == r && piece_column(pieces) == c){
 			return false;
@@ -25,7 +25,7 @@ bool is_empty_square(int r, int c, pieces_t pieces) {
 	return true;
 }
 
-bool is_capture(int r, int c, int color, pieces_t pieces) {
+bool is_capture(pieces_t pieces, int r, int c, int color) {
 	while (pieces != NULL){
 		if (piece_row(pieces) == r && piece_column(pieces) == c){
 			if (piece_color(pieces) != color) 
@@ -36,18 +36,18 @@ bool is_capture(int r, int c, int color, pieces_t pieces) {
 	return false;
 }
 
-bool valid_and_empty(int r, int c, pieces_t pieces){
-	if (is_valid_square(r, c) && (is_empty_square(r, c, pieces))) {
+bool valid_and_empty(pieces_t pieces, int r, int c){
+	if (is_valid_square(r, c) && (is_empty_square(pieces, r, c))) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-bool valid_and_empty_or_capture(int r, int c, int color, pieces_t pieces){
+bool valid_and_empty_or_capture(pieces_t pieces, int r, int c, int color){
 	if (is_valid_square(r, c) && 
-		 (is_empty_square(r, c, pieces) || 
-			is_capture(r, c, color, pieces))) {
+		 (is_empty_square(pieces, r, c) || 
+			is_capture(pieces, r, c, color))) {
 		return true;
 	} else {
 		return false;
@@ -71,7 +71,7 @@ bool is_posible_move(pieces_t pieces, char name, int r, int c){
 	return false;
 }
 
-bool is_pos_move(pieces_t piece, char name, int c, int r){
+bool is_pos_move(pieces_t piece, char name, int r, int c){
 	if (piece_name(piece) != name){ return false; }
 	if (get_posible_moves(piece) == NULL){ return false; }
 
@@ -100,21 +100,20 @@ squares_t pawn_moves(pieces_t pawn, pieces_t pieces){
 		start = 7; step = -1;
 	}
 
-	if (valid_and_empty(r + step, c, pieces)) {
-		result = add_move(r + step, c, result);
+	if (valid_and_empty(pieces, r + step, c)) {
+		result = new_square(result, r + step, c);
 		if (r == start) {
-			if (valid_and_empty(r + (2*step), c, pieces)) {
-				result = add_move(r + (2*step), c, result);
+			if (valid_and_empty(pieces, r + (2*step), c)) {
+				result = new_square(result, r + (2*step), c);
 			}
 		}
 	}
-	
 
-	if (is_capture(r + step, c + 1, color, pieces)) {
-		result = add_move(r + step, c + 1, result);
+	if (is_capture(pieces, r + step, c + 1, color)) {
+		result = new_square(result, r + step, c + 1);
 	}
-	if (is_capture(r + step, c - 1, color, pieces)) {
-		result = add_move(r + step, c - 1, result);
+	if (is_capture(pieces, r + step, c - 1, color)) {
+		result = new_square(result, r + step, c - 1);
 	}
 
 	return result;
@@ -131,8 +130,8 @@ squares_t knight_moves(pieces_t knight, pieces_t pieces){
 	int columns[8] = 	{c+1, c-1, c+2, c-2, c+2, c-2, c+1, c-1};
 
 	for (int i = 0; i<8; i++) {
-		if (valid_and_empty_or_capture(rows[i], columns[i], color, pieces)) { 
-			result = add_move(rows[i], columns[i], result); 
+		if (valid_and_empty_or_capture(pieces, rows[i], columns[i], color)) { 
+			result = new_square(result, rows[i], columns[i]); 
 		}
 	}
 
@@ -152,13 +151,13 @@ squares_t bishop_moves(pieces_t bishop, pieces_t pieces){
 
 	for (int i = 0; i < 4; i++) {
 		r = row; c = column;
-		while (valid_and_empty(r + rows[i], c + columns[i], pieces)) {
-			result = add_move(r + rows[i], c + columns[i], result);
+		while (valid_and_empty(pieces, r + rows[i], c + columns[i])) {
+			result = new_square(result, r + rows[i], c + columns[i]);
 			r = r + rows[i]; 
 			c = c + columns[i];
 		}
-		if (is_capture(r + rows[i], c + columns[i], color, pieces)){
-			result = add_move(r + rows[i], c + columns[i], result);
+		if (is_capture(pieces, r + rows[i], c + columns[i], color)){
+			result = new_square(result, r + rows[i], c + columns[i]);
 		}
 	}
 
@@ -178,13 +177,13 @@ squares_t rook_moves(pieces_t rook, pieces_t pieces){
 
 	for (int i = 0; i < 4; i++) {
 		r = row; c = column;
-		while (valid_and_empty(r + rows[i], c + columns[i], pieces)) {
-			result = add_move(r + rows[i], c + columns[i], result);
+		while (valid_and_empty(pieces, r + rows[i], c + columns[i])) {
+			result = new_square(result, r + rows[i], c + columns[i]);
 			r = r + rows[i]; 
 			c = c + columns[i];
 		}
-		if (is_capture(r + rows[i], c + columns[i], color, pieces)){
-			result = add_move(r + rows[i], c + columns[i], result);
+		if (is_capture(pieces, r + rows[i], c + columns[i], color)){
+			result = new_square(result, r + rows[i], c + columns[i]);
 		}
 	}
 
@@ -206,8 +205,8 @@ squares_t king_moves(pieces_t king, pieces_t pieces){
 	int columns[8] = 	{c	, c-1, c+1, c-1, c+1, c	 , c+1, c-1};
 
 	for (int i = 0; i<8; i++) {
-		if (valid_and_empty_or_capture(rows[i], columns[i], color, pieces)){ 
-			result = add_move(rows[i], columns[i], result); 
+		if (valid_and_empty_or_capture(pieces, rows[i], columns[i], color)){ 
+			result = new_square(result, rows[i], columns[i]); 
 		}
 	}
 
@@ -254,13 +253,13 @@ void calculate_moves(pieces_t pieces, char color) {
 
 // Moves
 
-pieces_t pawn_move(pieces_t pieces, int c, int r){
+pieces_t pawn_move(pieces_t pieces, int r, int c){
 	pieces_t p = pieces;
 	char name = 'P';
 
 	while (p != NULL){
-		if (is_pos_move(p, name, c, r)){
-			set_position(p, c, r);
+		if (is_pos_move(p, name, r, c)){
+			set_position(p, r, c);
 		}
 		p = next_piece(p);
 	}
@@ -268,13 +267,13 @@ pieces_t pawn_move(pieces_t pieces, int c, int r){
 	return pieces;
 }
 
-pieces_t simple_move(pieces_t pieces, char name, int c, int r){
+pieces_t simple_move(pieces_t pieces, char name, int r, int c){
 	pieces_t p = pieces;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, c, r) &&
-					is_empty_square(r, c, pieces)){
-			set_position(p, c, r);
+		if (piece_name(p) == name && is_pos_move(p, name, r, c) &&
+					is_empty_square(pieces, r, c)){
+			set_position(p, r, c);
 		}
 		p = next_piece(p);
 	}
@@ -282,13 +281,13 @@ pieces_t simple_move(pieces_t pieces, char name, int c, int r){
 	return pieces;
 }
 
-pieces_t promotion(pieces_t pieces, int c, int r, char new_name){
+pieces_t promotion(pieces_t pieces, int r, int c, char new_name){
 	pieces_t p = pieces;
 	char name = 'P';
 
 	while (p != NULL){
-		if (is_pos_move(p, name, c, r)){
-			set_position(p, c, r);
+		if (is_pos_move(p, name, r, c)){
+			set_position(p, r, c);
 			set_name(p, new_name);
 		}
 		p = next_piece(p);
@@ -307,44 +306,24 @@ bool is_pawn(char name){
 	return true;
 }
 
-pieces_t capture(pieces_t pieces, char name, int c, int r){
+pieces_t capture(pieces_t pieces, char name, int r, int c){
 	// could be a pawn capture!
 	pieces_t delete;
 	pieces_t p = pieces;
 
 	if (is_pawn(name)){
-		while (p != NULL){
-			if (is_pos_move(p, 'P', c, r) && 
-					piece_column(p) == column_to_int(name)){
-				delete = search_piece(pieces, c, r);
-				pieces = delete_piece(pieces, delete);
-				set_position(p, c, r);
-			}
-		p = next_piece(p);
-		}
-	}
-	else {
-		while (p != NULL){
-			if (is_pos_move(p, name, c, r)){
-				delete = search_piece(pieces, c, r);
-				pieces = delete_piece(pieces, delete);
-				set_position(p, c, r);
-			}
-		p = next_piece(p);
-		}
-	}
+		name = 'P';
+		if (piece_column(p) == column_to_int(name)){
 
-	return pieces;
-}
+		}
 
-pieces_t from_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
-	pieces_t p = pieces;
+	}
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, c, r_dest) &&
-					r_src == piece_row(p) &&
-					is_empty_square(r_dest, c, pieces)){
-			set_position(p, c, r_dest);
+		if (is_pos_move(p, name, r, c)){
+			delete = search_piece(pieces, r, c);
+			pieces = delete_piece(pieces, delete);
+			set_position(p, r, c);
 		}
 		p = next_piece(p);
 	}
@@ -352,14 +331,28 @@ pieces_t from_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest)
 	return pieces;
 }
 
-pieces_t from_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r_dest){
+pieces_t from_row_move(pieces_t pieces, char name, int r_src, int r_dest, int c){
 	pieces_t p = pieces;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, c_dest, r_dest) &&
+		if (piece_name(p) == name && is_pos_move(p, name, r_dest, c) &&
+				r_src == piece_row(p) && is_empty_square(pieces, r_dest, c)){
+			set_position(p, r_dest, c);
+		}
+		p = next_piece(p);
+	}
+
+	return pieces;
+}
+
+pieces_t from_column_move(pieces_t pieces, char name, int r_dest, int c_src, int c_dest){
+	pieces_t p = pieces;
+
+	while (p != NULL){
+		if (piece_name(p) == name && is_pos_move(p, name, r_dest, c_dest) &&
 					c_src == piece_column(p) &&
-					is_empty_square(r_dest, c_dest, pieces)){
-			set_position(p, c_dest, r_dest);
+					is_empty_square(pieces, r_dest, c_dest)){
+			set_position(p, r_dest, c_dest);
 		}
 		p = next_piece(p);
 	}
@@ -367,18 +360,18 @@ pieces_t from_column_move(pieces_t pieces, char name, int c_src, int c_dest, int
 	return pieces;
 }
 
-pieces_t capture_column_move(pieces_t pieces, char name, int c_src, int c_dest, int r){
+pieces_t capture_column_move(pieces_t pieces, char name, int r, int c_src, int c_dest){
 	pieces_t p = pieces;
 	pieces_t delete;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, c_dest, r) &&
+		if (piece_name(p) == name && is_pos_move(p, name, r, c_dest) &&
 					c_src == piece_column(p) &&
-					is_empty_square(r, c_dest, pieces)){
+					is_empty_square(pieces, r, c_dest)){
 
-			delete = search_piece(pieces, c_dest, r);
+			delete = search_piece(pieces, r, c_dest);
 			pieces = delete_piece(pieces, delete);
-			set_position(p, c_dest, r);
+			set_position(p, r, c_dest);
 		}
 		p = next_piece(p);
 	}
@@ -386,18 +379,18 @@ pieces_t capture_column_move(pieces_t pieces, char name, int c_src, int c_dest, 
 	return pieces;
 }
 
-pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int c, int r_dest){
+pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int r_dest, int c){
 	pieces_t p = pieces;
 	pieces_t delete;
 
 	while (p != NULL){
-		if (piece_name(p) == name && is_pos_move(p, name, c, r_dest) &&
+		if (piece_name(p) == name && is_pos_move(p, name, r_dest, c) &&
 					r_src == piece_row(p) &&
-					is_empty_square(r_dest, c, pieces)){
+					is_empty_square(pieces, r_dest, c)){
 
-			delete = search_piece(pieces, c, r_dest);
+			delete = search_piece(pieces, r_dest, c);
 			pieces = delete_piece(pieces, delete);
-			set_position(p, c, r_dest);
+			set_position(p, r_dest, c);
 		}
 		p = next_piece(p);
 	}
@@ -417,13 +410,13 @@ board_t move_(board_t board, char * move, int len){
 	case 2:
 		c_dest = column_to_int(move[0]);
 		r_dest = move[1] - '0';
-		board = set_board(board, pawn_move(pieces, c_dest, r_dest));
+		board = set_board(board, pawn_move(pieces, r_dest, c_dest));
 		break;
 
 	case 3:
 		c_dest = column_to_int(move[1]);
 		r_dest = move[2] - '0';
-		board = set_board(board, simple_move(pieces, name, c_dest, r_dest));
+		board = set_board(board, simple_move(pieces, name, r_dest, c_dest));
 		break;
 
 	case 4:
@@ -431,24 +424,24 @@ board_t move_(board_t board, char * move, int len){
 			c_dest = column_to_int(move[0]);
 			r_dest = move[1] - '0';
 			char new_name = move[3];
-			board = set_board(board, promotion(pieces, c_dest, r_dest, new_name));
+			board = set_board(board, promotion(pieces, r_dest, c_dest, new_name));
 		} 
 		else if (move[1] == 'x'){
 			c_dest = column_to_int(move[2]);
 			r_dest = move[3] - '0';
-			board = set_board(board, capture(pieces, name, c_dest, r_dest));
+			board = set_board(board, capture(pieces, name, r_dest, c_dest));
 		} 
 		else if (column_to_int(move[1]) == 8) { // It's not a column
 			r_src = move[1] - '0';
 			c_dest = column_to_int(move[2]);
 			r_dest = move[3] - '0';
-			board = set_board(board, from_row_move(pieces, name, r_src, c_dest, r_dest));
+			board = set_board(board, from_row_move(pieces, name, r_src, r_dest, c_dest));
 		} 
 		else {
 			c_src = column_to_int(move[1]);
 			c_dest = column_to_int(move[2]);
 			r_dest = move[3] - '0';
-			board = set_board(board, from_column_move(pieces, name, c_src, c_dest, r_dest));
+			board = set_board(board, from_column_move(pieces, name, r_dest, c_src, c_dest));
 		}
 		break;
 	case 5:
@@ -456,12 +449,12 @@ board_t move_(board_t board, char * move, int len){
 			r_src = move[1] - '0';
 			c_dest = column_to_int(move[3]);
 			r_dest = move[4] - '0';
-			board = set_board(board, capture_row_move(pieces, name, r_src, c_dest, r_dest));
+			board = set_board(board, capture_row_move(pieces, name, r_src, r_dest, c_dest));
 		} else {
 			c_src = column_to_int(move[1]);
 			c_dest = column_to_int(move[3]);
 			r_dest = move[4] - '0';
-			board = set_board(board, capture_column_move(pieces, name, c_src, c_dest, r_dest));
+			board = set_board(board, capture_column_move(pieces, name, r_dest, c_src, c_dest));
 		}
 		break;
 	}

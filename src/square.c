@@ -7,7 +7,7 @@ struct _square_t {
 	squares_t 	nextSq;
 };
 
-squares_t add_move(int r, int c, squares_t moves){
+squares_t new_square(squares_t squares, int r, int c){
 	squares_t move = NULL;
 	move = calloc(1, sizeof(struct _square_t));
 
@@ -15,8 +15,8 @@ squares_t add_move(int r, int c, squares_t moves){
 	move->column = c;
 	move->nextSq = NULL;
 
-	if (moves != NULL) {
-		move->nextSq = moves;
+	if (squares != NULL) {
+		move->nextSq = squares;
 	}
 
 	return move;
@@ -36,8 +36,6 @@ squares_t concat_moves(squares_t a, squares_t b){
 	return result;
 }
 
-// Get info
-
 int get_column(squares_t square){
 	return square->column;
 }
@@ -46,7 +44,22 @@ int get_row(squares_t square){
 	return square->row;
 }
 
-int get_moves_count(squares_t move){
+squares_t get_random_move(squares_t moves){
+    time_t t;
+    
+    int len = count_moves(moves);
+    srand((unsigned) time(&t));
+
+    int index = rand() % len;
+    while (index > 0){
+        index--;
+        moves = next_square(moves);
+    }
+
+    return moves;
+}
+
+int count_moves(squares_t move){
 	int count = 0;
 	if (move == NULL) { return count; }
 

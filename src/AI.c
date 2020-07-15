@@ -3,60 +3,32 @@
 #include "validation.h"
 #include "AI.h"
 
-#include <time.h>
-
-pieces_t get_random_piece(pieces_t pieces){
-    pieces_t p = pieces;
-    time_t t;
-    int len = get_pieces_count(pieces);
-    srand((unsigned) time(&t));
-    int index = rand() % len;
-
-    while (index != 0){
-        index--;
-        p = next_piece(p);
-    }
-
-    return p;
-}
-
-squares_t get_random_move(pieces_t piece){
-    time_t t;
-    squares_t moves = get_posible_moves(piece);
-    
-    int len = get_moves_count(moves);
-    srand((unsigned) time(&t));
-    int index = rand() % len;
-
-    while (index > 0){
-        index--;
-        moves = next_square(moves);
-    }
-
-    return moves;
-}
-
 board_t AI_response(board_t board, char color){
 	pieces_t pieces = get_board_pieces(board);
     pieces_t piece, delete;
-    squares_t move;
+    squares_t moves, move;
 
     calculate_moves(pieces, color);
     
+    // Choose a random piece
     do {
         piece = get_random_piece(pieces);
     } while ((piece_color(piece) != color) || (!can_move(piece)));
     
-    move = get_random_move(piece);
+    // Choose a random move!
+    moves = get_posible_moves(piece);
+    move = get_random_move(moves);
+    
     char column = get_column(move);
     char row = get_row(move);
     
-    if (!(is_empty_square(row, column, pieces))){
-        delete = search_piece(pieces, column, row);
+    // Make the move!!
+    if (!(is_empty_square(pieces, row, column))){
+        delete = search_piece(pieces, row, column);
         pieces = delete_piece(pieces, delete);
     }
-    set_position(piece, column, row);
-
+    set_position(piece, row, column);
     board = set_board(board, pieces);
+
     return board;
 }
