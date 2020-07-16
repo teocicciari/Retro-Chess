@@ -59,6 +59,13 @@ int get_row(squares_t square){
 	return square->row;
 }
 
+bool square_match(squares_t square, int row, int column){
+	if ((square->column == column) && (square->row == row)){
+		return true;
+	}
+	return false;
+}
+
 int count_moves(squares_t move){
 	int count = 0;
 	if (move == NULL) { return count; }

@@ -4,7 +4,7 @@
 
 #include "AI.h"
 
-board_t AI_response(board_t board, char color){
+board_t AI_response(board_t board, bool color){
 	pieces_t pieces = get_board_pieces(board);
 
     pieces_t piece, delete;
@@ -15,7 +15,7 @@ board_t AI_response(board_t board, char color){
     // Choose a random piece
     do {
         piece = get_random_piece(pieces);
-    } while ((piece_color(piece) != color) || (!can_move(piece)));
+    } while ((piece_color(piece) != color) || (!piece_can_move(piece)));
     
     // Choose a random move!
     moves = get_posible_moves(piece);

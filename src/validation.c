@@ -127,7 +127,7 @@ squares_t queen_moves(pieces_t queen, pieces_t pieces){
 	return concat_moves(bishop_moves(queen, pieces), rook_moves(queen, pieces));
 }
 
-void calculate_moves(board_t board, char color) {
+void calculate_moves(board_t board, bool color) {
 	pieces_t pieces = get_board_pieces(board);
 	squares_t moves;
 

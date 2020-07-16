@@ -6,5 +6,5 @@
 #include <ctype.h>
 #include <time.h>
 
-#define BLACK 'b'
-#define WHITE 'w'
+#define BLACK   0
+#define WHITE   1

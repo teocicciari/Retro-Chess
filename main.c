@@ -95,7 +95,7 @@ int main(void) {
 
                     thinking();
                     
-                    board = AI_response(board, 'b');
+                    board = AI_response(board, BLACK);
                     print_board(board);
                 }
 

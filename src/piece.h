@@ -10,7 +10,7 @@ typedef struct _position_t  *position_t;
 
 // Initialization
 pieces_t    empty_pieces();
-pieces_t    new_piece(pieces_t pieces, char name, char color, int row, int column);
+pieces_t    new_piece(pieces_t pieces, char name, bool color, int row, int column);
 pieces_t    set_initial_position(pieces_t pieces);
 pieces_t    copy_pieces(pieces_t pieces);
 
@@ -19,7 +19,7 @@ char        piece_name(pieces_t piece);
 char        piece_name_capitalized(pieces_t piece);
 void        set_name(pieces_t piece, char name);
 
-char        piece_color(pieces_t piece);
+bool        piece_color(pieces_t piece);
 
 void        set_position(pieces_t piece, int row, int column);
 int         piece_column(pieces_t piece);

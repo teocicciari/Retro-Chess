@@ -11,10 +11,21 @@ int column_to_int(char row){
 	return result;
 }
 
-bool can_move(pieces_t piece){
+bool piece_can_move(pieces_t piece){
 	if (get_posible_moves(piece) != NULL){
 		return true;
 	}
+	return false;
+}
+
+bool player_can_move(pieces_t pieces){
+	pieces_t piece = pieces;
+	do {
+		if (piece_can_move(piece)) {
+			return true;
+		}
+	} while ((piece = next_piece(piece)) != NULL);
+
 	return false;
 }
 
@@ -26,6 +37,56 @@ bool is_pawn(char name){
 		}
 	}
 	return true;
+}
+
+pieces_t get_king(pieces_t pieces, bool color){
+	pieces_t piece = pieces;
+
+	do {
+		if (piece_color(piece) == color && piece_name(piece) == 'K'){
+			return piece;
+		}
+	} while ((piece = next_piece(piece)) != NULL);
+	
+	return NULL;
+}
+
+bool is_in_check(board_t board, bool color){
+	bool result = false;
+	board_t copy = copy_board(board);
+
+	pieces_t pieces = get_board_pieces(board);
+	pieces_t king = get_king(pieces, color);
+	if (king == NULL){ return NULL; }
+
+	bool op_color = !color;
+	int row = piece_row(king);
+	int column = piece_column(king);
+
+	calculate_moves(copy, op_color);
+
+	if (square_is_reachable(pieces, op_color, row, column)){
+		result = true;
+	}
+
+	destroy_board(copy);
+	return result;
+}
+
+bool is_checkmate(board_t board, bool color){
+	pieces_t pieces = get_board_pieces(board);
+	if (!player_can_move(pieces) && is_in_check(board, color)){
+		return true;
+	}
+	return false;
+}
+
+bool is_stalemate(board_t board, bool color){
+	pieces_t pieces = get_board_pieces(board);
+	if (!player_can_move(pieces) && !(is_in_check(board, color))){
+		return true;
+	}
+	return false;
 }
 
 bool is_valid_square(int r, int c) {
@@ -46,7 +107,7 @@ bool is_empty_square(pieces_t pieces, int r, int c) {
 	return true;
 }
 
-bool is_capture(pieces_t pieces, int r, int c, int color) {
+bool is_capture(pieces_t pieces, int r, int c, bool color) {
 	while (pieces != NULL){
 		if (piece_row(pieces) == r && piece_column(pieces) == c){
 			if (piece_color(pieces) != color) 
@@ -75,7 +136,23 @@ bool valid_and_empty_or_capture(pieces_t pieces, int r, int c, int color){
 	}
 }
 
-bool is_posible_move(pieces_t pieces, char name, int r, int c){
+bool square_is_reachable(pieces_t pieces, bool color, int row, int column){
+	squares_t moves;
+	pieces_t p = pieces;
+
+	do {
+		moves = get_posible_moves(pieces);
+		do {
+			if (piece_color(p) == color && square_match(moves, row, column)){
+				return true;
+			}
+		} while ((moves = next_square(moves)) != NULL);
+	} while ((p = next_piece(p)) != NULL);
+
+	return false;
+}
+
+bool is_posible_move(pieces_t pieces, char name, int row, int column){
 	/*
 	Take all the pieces and check if some piece match the move
 	*/
@@ -85,7 +162,7 @@ bool is_posible_move(pieces_t pieces, char name, int r, int c){
 		if (piece_name(pieces) == name) {
 			moves = get_posible_moves(pieces);
 			do {
-				if (get_column(moves) == c && get_row(moves) == r){
+				if (square_match(moves, row, column)){
 					return true;
 				}
 			} while ((moves = next_square(moves)) != NULL);

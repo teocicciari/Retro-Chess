@@ -8,7 +8,7 @@ struct _position_t {
 
 struct _piece_t {
 	char 		name;
-	char 		color;
+	bool 		color;
 	position_t	position;
 	squares_t 	posible_moves;
 	pieces_t 	next;
@@ -19,7 +19,7 @@ pieces_t empty_pieces(){
 	return(pieces);
 }
 
-pieces_t new_piece(pieces_t pieces, char name, char color, int r, int c){
+pieces_t new_piece(pieces_t pieces, char name, bool color, int r, int c){
 	pieces_t piece = NULL;
 	piece = calloc(1, sizeof(struct _piece_t));
 
@@ -53,39 +53,39 @@ pieces_t copy_pieces(pieces_t pieces){
 
 pieces_t set_initial_position(pieces_t pieces){
 	// White's pieces
-	pieces = new_piece(pieces, 'R', 'w', 1, 0);
-	pieces = new_piece(pieces, 'N', 'w', 1, 1);
-	pieces = new_piece(pieces, 'B', 'w', 1, 2);
-	pieces = new_piece(pieces, 'Q', 'w', 1, 3);
-	pieces = new_piece(pieces, 'K', 'w', 1, 4);
-	pieces = new_piece(pieces, 'B', 'w', 1, 5);
-	pieces = new_piece(pieces, 'N', 'w', 1, 6);
-	pieces = new_piece(pieces, 'R', 'w', 1, 7);
+	pieces = new_piece(pieces, 'R', WHITE, 1, 0);
+	pieces = new_piece(pieces, 'N', WHITE, 1, 1);
+	pieces = new_piece(pieces, 'B', WHITE, 1, 2);
+	pieces = new_piece(pieces, 'Q', WHITE, 1, 3);
+	pieces = new_piece(pieces, 'K', WHITE, 1, 4);
+	pieces = new_piece(pieces, 'B', WHITE, 1, 5);
+	pieces = new_piece(pieces, 'N', WHITE, 1, 6);
+	pieces = new_piece(pieces, 'R', WHITE, 1, 7);
 
 	// Pawns
 	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 'P', 'w', 2, i);
+		pieces = new_piece(pieces, 'P', WHITE, 2, i);
 	}
 
 	// Black's pieces
-	pieces = new_piece(pieces, 'r', 'b', 8, 0);
-	pieces = new_piece(pieces, 'n', 'b', 8, 1);
-	pieces = new_piece(pieces, 'b', 'b', 8, 2);
-	pieces = new_piece(pieces, 'q', 'b', 8, 3);
-	pieces = new_piece(pieces, 'k', 'b', 8, 4);
-	pieces = new_piece(pieces, 'b', 'b', 8, 5);
-	pieces = new_piece(pieces, 'n', 'b', 8, 6);
-	pieces = new_piece(pieces, 'r', 'b', 8, 7);
+	pieces = new_piece(pieces, 'r', BLACK, 8, 0);
+	pieces = new_piece(pieces, 'n', BLACK, 8, 1);
+	pieces = new_piece(pieces, 'b', BLACK, 8, 2);
+	pieces = new_piece(pieces, 'q', BLACK, 8, 3);
+	pieces = new_piece(pieces, 'k', BLACK, 8, 4);
+	pieces = new_piece(pieces, 'b', BLACK, 8, 5);
+	pieces = new_piece(pieces, 'n', BLACK, 8, 6);
+	pieces = new_piece(pieces, 'r', BLACK, 8, 7);
 
 	// Pawns
 	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 'p', 'b', 7, i);
+		pieces = new_piece(pieces, 'p', BLACK, 7, i);
 	}
 
 	return(pieces);
 }
 
-char piece_color(pieces_t piece){
+bool piece_color(pieces_t piece){
 	assert(piece != NULL);
 	return(piece->color);
 }
