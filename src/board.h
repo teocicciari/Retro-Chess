@@ -7,9 +7,9 @@
 typedef struct _board_t *board_t;
 
 // Initialization
-board_t     empty_board();
+board_t     new_board();
 board_t     board_init(board_t board);
-pieces_t    set_initial_position(pieces_t pieces);
+board_t     copy_board(board_t board);
 
 // Set & get info
 pieces_t    get_board_pieces(board_t board);

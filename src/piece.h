@@ -11,10 +11,12 @@ typedef struct _position_t  *position_t;
 // Initialization
 pieces_t    empty_pieces();
 pieces_t    new_piece(pieces_t pieces, char name, char color, int row, int column);
+pieces_t    set_initial_position(pieces_t pieces);
+pieces_t    copy_pieces(pieces_t pieces);
 
 // Set & get info
 char        piece_name(pieces_t piece);
-char        piece_name_cap(pieces_t piece);
+char        piece_name_capitalized(pieces_t piece);
 void        set_name(pieces_t piece, char name);
 
 char        piece_color(pieces_t piece);
@@ -35,9 +37,6 @@ int         count_pieces(pieces_t pieces);
 
 // Releasing
 pieces_t    delete_piece(pieces_t pieces, pieces_t piece);
-pieces_t    destroy_pieces(pieces_t piece);
-
-// move to another file
-int         column_to_int(char row);
+void        destroy_pieces(pieces_t pieces);
 
 #endif

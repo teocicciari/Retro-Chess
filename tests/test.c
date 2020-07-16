@@ -81,7 +81,7 @@ void tests(board_t board) {
     case MOVE:
       move = get_move2();
       int len = strlen(move) - 1;
-      board = move_(board, move, len);
+      move_(board, move, len);
       calculate_moves(board, 'w');
       break;
     case NEW_PIECE:

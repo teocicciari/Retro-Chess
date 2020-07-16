@@ -1,10 +1,12 @@
 #include "piece.h"
 #include "square.h"
 #include "validation.h"
+
 #include "AI.h"
 
 board_t AI_response(board_t board, char color){
 	pieces_t pieces = get_board_pieces(board);
+
     pieces_t piece, delete;
     squares_t moves, move;
 
@@ -27,6 +29,7 @@ board_t AI_response(board_t board, char color){
         delete = search_piece(pieces, row, column);
         pieces = delete_piece(pieces, delete);
     }
+
     set_position(piece, row, column);
     board = set_board(board, pieces);
 

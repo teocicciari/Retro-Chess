@@ -26,9 +26,9 @@ char get_input(void) {
 
 char * get_move() {
     char * line;
-    line = calloc(10, sizeof(char));
+    line = calloc(256, sizeof(char));
 
-    if (fgets(line, sizeof line, stdin) == NULL) {
+    if (fgets(line, 256*sizeof(char), stdin) == NULL) {
         printf("move fail");
         return(NULL);
     }
@@ -40,8 +40,7 @@ int main(void) {
     char input = 'n';
     char * move;
 
-    board_t b;
-    board_t board = empty_board();
+    board_t board = new_board();
     
     print_init();
     input = get_input();
@@ -76,7 +75,7 @@ int main(void) {
         switch (move[0]) {
 	        case RESTART:
                 board = destroy_board(board);
-                board = empty_board();
+                board = new_board();
                 board = board_init(board);
                 print_board(board);
 	            break;
@@ -87,19 +86,19 @@ int main(void) {
 	            return (EXIT_SUCCESS);
                 
 	        default:
-                while ((b = move_(board, move, len)) == NULL){
-                    move = get_move();
-                    len = strlen(move) - 1;
+                if (!(is_valid_move(board, move, len))) {
+                    printf("Imposible move, try again!\n");
+                } else {
+                    board = move_(board, move, len);
+                    calculate_moves(board, 'w');
+                    print_board(board);
+
+                    thinking();
+                    
+                    board = AI_response(board, 'b');
+                    print_board(board);
                 }
-                board = b;
 
-                calculate_moves(board, 'w');
-                print_board(board);
-
-                thinking();
-                
-                board = AI_response(board, 'b');
-                print_board(board);
 	            break;
         }
 

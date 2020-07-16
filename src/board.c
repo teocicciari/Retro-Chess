@@ -9,13 +9,14 @@ struct _board_t {
 	bool		w_short_castle;
 	bool		b_long_castle;
 	bool		b_short_castle;
+	
 	bool		game_finished;
 };
 
-board_t empty_board(){
+board_t new_board(){
 	board_t board;
-
 	board = calloc(1, sizeof(struct _board_t));
+
 	board->pieces = empty_pieces();
 
 	board->last_move = NULL;
@@ -30,20 +31,30 @@ board_t empty_board(){
 
 board_t board_init(board_t board){
 	board->pieces = set_initial_position(board->pieces);
+
+	// Castling
 	board->w_long_castle = 1;
 	board->w_short_castle = 1;
 	board->b_long_castle = 1;
 	board->b_short_castle = 1;
 
 	return(board);
-}
+} 
 
-board_t destroy_board(board_t board){
-	assert(board != NULL);
-	board->pieces = destroy_pieces(board->pieces);
-	free(board);
-	board = NULL;
-	return(board);
+board_t copy_board(board_t board){
+	board_t copy;
+	copy = calloc(1, sizeof(struct _board_t));
+
+	copy->pieces = copy_pieces(board->pieces);
+
+	copy->last_move = board->last_move;
+	copy->w_long_castle = board->w_long_castle;
+	copy->w_short_castle = board->w_short_castle;
+	copy->b_long_castle = board->b_long_castle;
+	copy->b_short_castle = board->b_short_castle;
+	copy->game_finished = board->game_finished;
+
+	return(copy);
 }
 
 pieces_t get_board_pieces(board_t board){
@@ -53,34 +64,6 @@ pieces_t get_board_pieces(board_t board){
 board_t set_board(board_t board, pieces_t pieces){
 	board->pieces = pieces;
 	return board;
-}
-
-pieces_t set_initial_position(pieces_t pieces){
-	pieces = new_piece(pieces, 'R', 'w', 1, 0);
-	pieces = new_piece(pieces, 'N', 'w', 1, 1);
-	pieces = new_piece(pieces, 'B', 'w', 1, 2);
-	pieces = new_piece(pieces, 'Q', 'w', 1, 3);
-	pieces = new_piece(pieces, 'K', 'w', 1, 4);
-	pieces = new_piece(pieces, 'B', 'w', 1, 5);
-	pieces = new_piece(pieces, 'N', 'w', 1, 6);
-	pieces = new_piece(pieces, 'R', 'w', 1, 7);
-
-	pieces = new_piece(pieces, 'r', 'b', 8, 0);
-	pieces = new_piece(pieces, 'n', 'b', 8, 1);
-	pieces = new_piece(pieces, 'b', 'b', 8, 2);
-	pieces = new_piece(pieces, 'q', 'b', 8, 3);
-	pieces = new_piece(pieces, 'k', 'b', 8, 4);
-	pieces = new_piece(pieces, 'b', 'b', 8, 5);
-	pieces = new_piece(pieces, 'n', 'b', 8, 6);
-	pieces = new_piece(pieces, 'r', 'b', 8, 7);
-
-	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 'p', 'b', 7, i);
-	}
-	for (int i=0;i<8;i++){
-		pieces = new_piece(pieces, 'P', 'w', 2, i);
-	}
-	return(pieces);
 }
 
 void print_board(board_t board){
@@ -126,4 +109,17 @@ void print_board(board_t board){
 	}
 	printf("\t    | a | b | c | d | e | f | g | h |\n\n");
 	printf("\t   q: exit to menu - r: restart game\n\n");
+}
+
+board_t destroy_board(board_t board){
+	assert(board != NULL);
+
+	if (board->pieces != NULL){
+		destroy_pieces(board->pieces);
+	}
+
+	free(board);
+
+	board = NULL;
+	return(board);
 }
