@@ -3,13 +3,6 @@
 
 struct _board_t {
 	pieces_t 	pieces;
-
-	char *		last_move;
-	bool		w_long_castle;
-	bool		w_short_castle;
-	bool		b_long_castle;
-	bool		b_short_castle;
-	
 	bool		game_finished;
 };
 
@@ -18,12 +11,6 @@ board_t new_board(){
 	board = calloc(1, sizeof(struct _board_t));
 
 	board->pieces = empty_pieces();
-
-	board->last_move = NULL;
-	board->w_long_castle = 0;
-	board->w_short_castle = 0;
-	board->b_long_castle = 0;
-	board->b_short_castle = 0;
 	board->game_finished = 0;
 
 	return(board);
@@ -31,12 +18,6 @@ board_t new_board(){
 
 board_t board_init(board_t board){
 	board->pieces = set_initial_position(board->pieces);
-
-	// Castling
-	board->w_long_castle = 1;
-	board->w_short_castle = 1;
-	board->b_long_castle = 1;
-	board->b_short_castle = 1;
 
 	return(board);
 } 
@@ -47,11 +28,6 @@ board_t copy_board(board_t board){
 
 	copy->pieces = copy_pieces(board->pieces);
 
-	copy->last_move = board->last_move;
-	copy->w_long_castle = board->w_long_castle;
-	copy->w_short_castle = board->w_short_castle;
-	copy->b_long_castle = board->b_long_castle;
-	copy->b_short_castle = board->b_short_castle;
 	copy->game_finished = board->game_finished;
 
 	return(copy);

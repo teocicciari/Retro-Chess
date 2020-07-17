@@ -7,8 +7,8 @@
 #include "board.h"
 #include "helpers.h"
 
-void calculate_moves(board_t board, bool color);
-board_t move_(board_t board, char * move, int len);
-bool is_valid_move(board_t board, char * move, int len);
+void    calculate_moves(board_t board, bool color);
+bool    is_valid_move(board_t board, bool color, char * move, int len);
+board_t process_move(board_t board, char * move, int len);
 
 #endif

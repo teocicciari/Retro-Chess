@@ -43,7 +43,7 @@ pieces_t get_king(pieces_t pieces, bool color){
 	pieces_t piece = pieces;
 
 	do {
-		if (piece_color(piece) == color && piece_name(piece) == 'K'){
+		if (piece_color(piece) == color && piece_name_capitalized(piece) == 'K'){
 			return piece;
 		}
 	} while ((piece = next_piece(piece)) != NULL);
@@ -55,17 +55,20 @@ bool is_in_check(board_t board, bool color){
 	bool result = false;
 	board_t copy = copy_board(board);
 
-	pieces_t pieces = get_board_pieces(board);
+	pieces_t pieces = get_board_pieces(copy);
 	pieces_t king = get_king(pieces, color);
-	if (king == NULL){ return NULL; }
 
-	bool op_color = !color;
+	if (king == NULL){
+		printf("King not found :o"); 
+		return false; 
+	}
+
 	int row = piece_row(king);
 	int column = piece_column(king);
 
-	calculate_moves(copy, op_color);
+	calculate_moves(copy, !color);
 
-	if (square_is_reachable(pieces, op_color, row, column)){
+	if (square_is_reachable(pieces, !color, row, column)){
 		result = true;
 	}
 
@@ -141,9 +144,14 @@ bool square_is_reachable(pieces_t pieces, bool color, int row, int column){
 	pieces_t p = pieces;
 
 	do {
-		moves = get_posible_moves(pieces);
+		moves = get_posible_moves(p);
+		if (moves == NULL) { continue; }
 		do {
 			if (piece_color(p) == color && square_match(moves, row, column)){
+				if ((piece_name_capitalized(p) == 'P') &&
+					(piece_column(p) == column)){
+						continue;
+				}
 				return true;
 			}
 		} while ((moves = next_square(moves)) != NULL);

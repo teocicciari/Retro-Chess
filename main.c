@@ -70,10 +70,10 @@ int main(void) {
     do {
         move = get_move();
         int len = strlen(move) - 1;
-        calculate_moves(board, 'w');
+        calculate_moves(board, WHITE);
 
         switch (move[0]) {
-	        case RESTART:
+	        case RESTART:   
                 board = destroy_board(board);
                 board = new_board();
                 board = board_init(board);
@@ -86,16 +86,17 @@ int main(void) {
 	            return (EXIT_SUCCESS);
                 
 	        default:
-                if (!(is_valid_move(board, move, len))) {
+                if (!(is_valid_move(board, WHITE, move, len))) {
                     printf("Imposible move, try again!\n");
                 } else {
-                    board = move_(board, move, len);
-                    calculate_moves(board, 'w');
+                    board = process_move(board, move, len);
+                    calculate_moves(board, WHITE);
                     print_board(board);
 
                     thinking();
                     
                     board = AI_response(board, BLACK);
+                    calculate_moves(board, BLACK);
                     print_board(board);
                 }
 

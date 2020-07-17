@@ -300,7 +300,7 @@ pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int r_dest, int
 	return pieces;
 }
 
-board_t move_(board_t board, char * move, int len){
+board_t process_move(board_t board, char * move, int len){
 	pieces_t pieces = get_board_pieces(board);
 
     char name = move[0];
@@ -363,13 +363,14 @@ board_t move_(board_t board, char * move, int len){
     return(board);
 }
 
-bool is_valid_move(board_t board, char * move, int len){
-	bool result;
+bool is_valid_move(board_t board, bool color, char * move, int len){
+	bool result = true;
 
 	board_t copy = copy_board(board);
-	copy = move_(copy, move, len);
+	copy = process_move(copy, move, len);
 
-	result = !(position_match(board, copy));
+	result = !(is_in_check(copy, color));
+	result = result && (!(position_match(board, copy)));
 
 	destroy_board(copy);
 	return result;

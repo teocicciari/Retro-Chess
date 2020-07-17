@@ -16,6 +16,11 @@ bool piece_can_move(pieces_t piece);
 
 bool is_pawn(char name);
 
+
+bool is_in_check(board_t board, bool color);
+bool is_checkmate(board_t board, bool color);
+bool is_stalemate(board_t board, bool color);
+
 bool is_valid_square(int row, int column);
 bool is_empty_square(pieces_t pieces, int row, int column);
 bool is_capture(pieces_t pieces, int row, int column, bool color);

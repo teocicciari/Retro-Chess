@@ -139,6 +139,11 @@ int piece_column(pieces_t piece){
 	return(piece->position->column);
 }
 
+char piece_column_char(pieces_t piece){
+	char columns[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+	return columns[piece->position->column];
+}
+
 pieces_t search_piece(pieces_t pieces, int row, int column) {
 	assert(pieces != NULL);
 	
