@@ -1,5 +1,26 @@
 #include "helpers.h"
 
+bool wrong_input(char * move, int len){
+	bool result = true;
+
+	char first[13] = {'N','B','R','K','Q',
+					'a','b','c','d','e','f','g','h'};
+
+	if ((len > 5) || (len < 2)){
+		printf("That's not a move my friend\n");
+		return true;
+	}
+
+	for (int i=0; i<13; i++){
+		if (move[0] == first[i]){
+			result = false;
+		}
+	}
+
+
+	return result;
+}
+
 int column_to_int(char row){
 	int result = 8;
     char rows[8] = {'a','b','c','d','e','f','g','h'};
@@ -69,6 +90,7 @@ bool is_in_check(board_t board, bool color){
 	calculate_moves(copy, !color);
 
 	if (square_is_reachable(pieces, !color, row, column)){
+		printf("Your king is not safe!\n");
 		result = true;
 	}
 

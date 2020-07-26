@@ -366,6 +366,8 @@ board_t process_move(board_t board, char * move, int len){
 bool is_valid_move(board_t board, bool color, char * move, int len){
 	bool result = true;
 
+	if (wrong_input(move, len)) { return false; }
+
 	board_t copy = copy_board(board);
 	copy = process_move(copy, move, len);
 

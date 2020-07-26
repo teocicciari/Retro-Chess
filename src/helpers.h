@@ -7,6 +7,9 @@
 #include "board.h"
 #include "validation.h"
 
+
+bool wrong_input(char * move, int len);
+
 bool square_is_reachable(pieces_t pieces, bool color, int row, int column);
 bool position_match(board_t board1, board_t board2);
 

@@ -86,9 +86,7 @@ int main(void) {
 	            return (EXIT_SUCCESS);
                 
 	        default:
-                if (!(is_valid_move(board, WHITE, move, len))) {
-                    printf("Imposible move, try again!\n");
-                } else {
+                if (is_valid_move(board, WHITE, move, len)) {
                     board = process_move(board, move, len);
                     calculate_moves(board, WHITE);
                     print_board(board);
