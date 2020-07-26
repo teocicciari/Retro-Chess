@@ -4,7 +4,6 @@
 #include "src/board.h"
 #include "src/print.h"
 #include "src/AI.h"
-
 #include "tests/test.h"
 
 #define START     's'
@@ -13,38 +12,16 @@
 #define OPTIONS   'o'
 #define QUIT      'q'
 
-char get_input(void) {
-    char input = '\0';
-    char line[10];
-
-    if (fgets(line, sizeof line, stdin) != NULL) {
-        input = line[0];
-    }
-
-    return(input);
-}
-
-char * get_move() {
-    char * line;
-    line = calloc(256, sizeof(char));
-
-    if (fgets(line, 256*sizeof(char), stdin) == NULL) {
-        printf("move fail");
-        return(NULL);
-    }
-
-    return line;
-}
-
 int main(void) {
-    char input = 'n';
     char * move;
 
-    board_t board = new_board();
-    
     print_init();
+    board_t board = new_board();
+
+    // First Menu
+    char input = 'n';
     input = get_input();
-    
+
     switch (input)
     {
     case START:
@@ -64,6 +41,7 @@ int main(void) {
         return(EXIT_SUCCESS);
     }
     
+    // Playing
     print_board(board);
     first_move_message();
 

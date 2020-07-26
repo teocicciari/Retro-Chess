@@ -5,8 +5,8 @@
 squares_t pawn_moves(pieces_t pawn, pieces_t pieces){
 	squares_t result = NULL;
 
-	int r = 	piece_row(pawn);
-	int c = 	piece_column(pawn);
+	int r = piece_row(pawn);
+	int c = piece_column(pawn);
 	int color = piece_color(pawn);
 
 	int start = 2; int step = 1;
@@ -40,8 +40,8 @@ squares_t knight_moves(pieces_t knight, pieces_t pieces){
 	int c = piece_column(knight);
 	int color = piece_color(knight);
 
-	int rows[8] = 		{r+2, r+2, r+1, r+1, r-1, r-1, r-2, r-2};
-	int columns[8] = 	{c+1, c-1, c+2, c-2, c+2, c-2, c+1, c-1};
+	int rows[8] = {r+2, r+2, r+1, r+1, r-1, r-1, r-2, r-2};
+	int columns[8] = {c+1, c-1, c+2, c-2, c+2, c-2, c+1, c-1};
 
 	for (int i = 0; i<8; i++) {
 		if (valid_and_empty_or_capture(pieces, rows[i], columns[i], color)) { 
@@ -59,8 +59,8 @@ squares_t king_moves(pieces_t king, pieces_t pieces){
 	int c = piece_column(king);
 	int color = piece_color(king);
 
-	int rows[8] = 		{r+1, r+1, r+1, r	 , r	, r-1, r-1, r-1};
-	int columns[8] = 	{c	, c-1, c+1, c-1, c+1, c	 , c+1, c-1};
+	int rows[8] = {r+1, r+1, r+1, r, r, r-1, r-1, r-1};
+	int columns[8] = {c, c-1, c+1, c-1, c+1, c, c+1, c-1};
 
 	for (int i = 0; i<8; i++) {
 		if (valid_and_empty_or_capture(pieces, rows[i], columns[i], color)){ 
@@ -125,45 +125,6 @@ squares_t rook_moves(pieces_t rook, pieces_t pieces){
 
 squares_t queen_moves(pieces_t queen, pieces_t pieces){
 	return concat_moves(bishop_moves(queen, pieces), rook_moves(queen, pieces));
-}
-
-void calculate_moves(board_t board, bool color) {
-	pieces_t pieces = get_board_pieces(board);
-	squares_t moves;
-
-	pieces_t p = pieces;
-	do {
-		if (p != NULL && piece_color(p) == color) {
-			moves = NULL;
-
-			switch (piece_name_capitalized(p))
-			{
-			case 'P':
-				moves = pawn_moves(p, pieces);
-				break;
-			case 'R':
-				moves = rook_moves(p, pieces);
-				break;
-			case 'N':
-				moves = knight_moves(p, pieces);
-				break;
-			case 'B':
-				moves = bishop_moves(p, pieces);
-				break;
-			case 'K':
-				moves = king_moves(p, pieces);
-				break;
-			case 'Q':
-				moves = queen_moves(p, pieces);
-				break;
-			default:
-				printf("\ncase fail\n");
-				break;
-			}
-
-			set_posible_moves(p, moves);
-		} 
-	} while ((p = next_piece(p)) != NULL);
 }
 
 // ---------------------- Making the move ------------------------------
@@ -300,6 +261,49 @@ pieces_t capture_row_move(pieces_t pieces, char name, int r_src, int r_dest, int
 	return pieces;
 }
 
+// ---------------------- Important functions ------------------------------
+
+
+void calculate_moves(board_t board, bool color) {
+	pieces_t pieces = get_board_pieces(board);
+	squares_t moves;
+
+	pieces_t p = pieces;
+	do {
+		if (p != NULL && piece_color(p) == color) {
+			moves = NULL;
+
+			switch (piece_name_capitalized(p))
+			{
+			case 'P':
+				moves = pawn_moves(p, pieces);
+				break;
+			case 'R':
+				moves = rook_moves(p, pieces);
+				break;
+			case 'N':
+				moves = knight_moves(p, pieces);
+				break;
+			case 'B':
+				moves = bishop_moves(p, pieces);
+				break;
+			case 'K':
+				moves = king_moves(p, pieces);
+				break;
+			case 'Q':
+				moves = queen_moves(p, pieces);
+				break;
+			default:
+				printf("\ncase fail\n");
+				break;
+			}
+
+			set_posible_moves(p, moves);
+		} 
+	} while ((p = next_piece(p)) != NULL);
+}
+
+
 board_t process_move(board_t board, char * move, int len){
 	pieces_t pieces = get_board_pieces(board);
 
@@ -365,8 +369,6 @@ board_t process_move(board_t board, char * move, int len){
 
 bool is_valid_move(board_t board, bool color, char * move, int len){
 	bool result = true;
-
-	if (wrong_input(move, len)) { return false; }
 
 	board_t copy = copy_board(board);
 	copy = process_move(copy, move, len);

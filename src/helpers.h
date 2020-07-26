@@ -8,18 +8,17 @@
 #include "validation.h"
 
 
-bool wrong_input(char * move, int len);
+char get_input(void);
+char * get_move(void);
 
+int column_to_int(char column);
+char column_to_char(int column);
+
+bool piece_can_move(pieces_t piece);
 bool square_is_reachable(pieces_t pieces, bool color, int row, int column);
 bool position_match(board_t board1, board_t board2);
 
-int  column_to_int(char row);
-
-bool piece_can_move(pieces_t piece);
-
 bool is_pawn(char name);
-
-
 bool is_in_check(board_t board, bool color);
 bool is_checkmate(board_t board, bool color);
 bool is_stalemate(board_t board, bool color);

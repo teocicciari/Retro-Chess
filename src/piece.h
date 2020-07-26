@@ -23,7 +23,6 @@ bool        piece_color(pieces_t piece);
 
 void        set_position(pieces_t piece, int row, int column);
 int         piece_column(pieces_t piece);
-char        piece_column_char(pieces_t piece);
 int         piece_row(pieces_t piece);
 
 squares_t   get_posible_moves(pieces_t piece);

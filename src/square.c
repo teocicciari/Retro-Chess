@@ -55,10 +55,6 @@ int get_column(squares_t square){
 	return square->column;
 }
 
-char get_column_char(squares_t square){
-	char columns[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-	return columns[square->row];
-}
 
 int get_row(squares_t square){
 	return square->row;

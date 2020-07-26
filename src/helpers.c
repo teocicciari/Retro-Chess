@@ -1,35 +1,41 @@
 #include "helpers.h"
 
-bool wrong_input(char * move, int len){
-	bool result = true;
+char get_input(void) {
+    char input = '\0';
+    char line[10];
 
-	char first[13] = {'N','B','R','K','Q',
-					'a','b','c','d','e','f','g','h'};
+    if (fgets(line, sizeof line, stdin) != NULL) {
+        input = line[0];
+    }
 
-	if ((len > 5) || (len < 2)){
-		printf("That's not a move my friend\n");
-		return true;
-	}
-
-	for (int i=0; i<13; i++){
-		if (move[0] == first[i]){
-			result = false;
-		}
-	}
-
-
-	return result;
+    return(input);
 }
 
-int column_to_int(char row){
-	int result = 8;
-    char rows[8] = {'a','b','c','d','e','f','g','h'};
+char * get_move(void) {
+    char * line;
+    line = calloc(256, sizeof(char));
+
+    if (fgets(line, 256*sizeof(char), stdin) == NULL) {
+        printf("move fail");
+        return(NULL);
+    }
+
+    return line;
+}
+
+int column_to_int(char column){
+    char columns[8] = {'a','b','c','d','e','f','g','h'};
 
 	for (int i = 0; i < 8; i++) {
-		if (row == rows[i]) { result = i;}
+		if (column == columns[i]) { return i;}
 	}
 
-	return result;
+	return -1;
+}
+
+char column_to_char(int column){
+	char columns[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+	return columns[column];
 }
 
 bool piece_can_move(pieces_t piece){
@@ -50,16 +56,6 @@ bool player_can_move(pieces_t pieces){
 	return false;
 }
 
-bool is_pawn(char name){
-	char pos[5] = {'Q','N','B','R','K'};
-	for (int i = 0; i<5; i++){
-		if (pos[i] == name){
-			return false;
-		}
-	}
-	return true;
-}
-
 pieces_t get_king(pieces_t pieces, bool color){
 	pieces_t piece = pieces;
 
@@ -70,6 +66,16 @@ pieces_t get_king(pieces_t pieces, bool color){
 	} while ((piece = next_piece(piece)) != NULL);
 	
 	return NULL;
+}
+
+bool is_pawn(char name){
+	char pos[5] = {'Q','N','B','R','K'};
+	for (int i = 0; i<5; i++){
+		if (pos[i] == name){
+			return false;
+		}
+	}
+	return true;
 }
 
 bool is_in_check(board_t board, bool color){
