@@ -1,13 +1,12 @@
 #include "includes.h"
 
 #include "src/piece.h"
+#include "src/helpers.h"
 #include "src/board.h"
 #include "src/print.h"
-#include "src/AI.h"
-#include "tests/test.h"
+#include "src/AI.h"	
 
 #define START     's'
-#define TEST      't'
 #define RESTART   'r'
 #define OPTIONS   'o'
 #define QUIT      'q'
@@ -32,9 +31,6 @@ int main(void) {
         print_options();
         board = board_init(board);
         break;
-    case TEST:
-        tests(board);
-        return(EXIT_SUCCESS);
     case QUIT:
     default:
         quit_message();
