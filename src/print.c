@@ -67,7 +67,7 @@ void quit_message2(){
 }
 
 void first_move_message(){
-  printf("\nIt's your turn bitch: ");
+  printf("\nIt's your turn: ");
 }
 
 void move_message(){
